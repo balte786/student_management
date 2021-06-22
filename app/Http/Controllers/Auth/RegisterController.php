@@ -47,6 +47,12 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
+
+    public function showRegistrationForm()
+    {
+        return view('auth.register_new');
+    }
+
     protected function validator(array $data)
     {
         return Validator::make($data, [
@@ -64,6 +70,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        echo $data['phone'];exit;
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
