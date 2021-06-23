@@ -40,4 +40,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    public function school_category(){
+        return $this->belongsTo('App\Model\SchoolCategory', 'category_id');
+    }
+
+    public function school(){
+        return $this->belongsTo('App\Model\School', 'school_id');
+    }
 }
