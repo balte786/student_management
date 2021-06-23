@@ -20,6 +20,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'admin',
+        'category_id',
+        'school_id',
+        'approved_at'
     ];
 
     /**

@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Models\SchoolCategory;
 
 class RegisterController extends Controller
 {
@@ -50,7 +51,10 @@ class RegisterController extends Controller
 
     public function showRegistrationForm()
     {
-        return view('auth.register_new');
+        $school_categories = SchoolCategory::all();
+
+        return view('auth.register_new', compact('school_categories'));
+        //return view('auth.register_new');
     }
 
     protected function validator(array $data)
@@ -74,6 +78,8 @@ class RegisterController extends Controller
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'category_id' => 1,
+            'school_id' => 5,
             'password' => Hash::make($data['password']),
         ]);
     }

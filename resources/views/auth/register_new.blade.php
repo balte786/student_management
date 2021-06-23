@@ -68,6 +68,18 @@
                         </div>
 
                         <div class="form-group row">
+                            <label for="password" class="col-md-4 col-form-label text-md-right">School Type</label>
+
+                            <div class="col-md-6">
+                                <select class="form-control">
+                                    @foreach ($school_categories as $school_category)
+                                    <option>{{ $school_category->category_name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
                             <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
 
                             <div class="col-md-6">
