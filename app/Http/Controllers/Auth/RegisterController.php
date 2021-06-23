@@ -70,7 +70,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        echo $data['phone'];exit;
+        /*echo $data['phone'];exit;*/
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
