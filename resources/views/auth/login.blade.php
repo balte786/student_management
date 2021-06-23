@@ -53,7 +53,7 @@
                     <div class="pr-3 auth-right">
                         <h1 class="mb-3 text-18">New Users</h1>
                         <h2 class="mb-3 text-14">You need to register a profile to gain access to this portal</h2>
-                        <a class="btn  btn-outline-primary btn-outline-email btn-block btn-icon-text" href="register.php"><i class="i-Mail-with-At-Sign"></i> Register Profile</a>
+                        <a class="btn  btn-outline-primary btn-outline-email btn-block btn-icon-text" href="{{ route('register') }}"><i class="i-Mail-with-At-Sign"></i> Register Profile</a>
                     </div>
                 </div>
             </div>
