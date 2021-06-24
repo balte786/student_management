@@ -51,12 +51,21 @@
                             <span class="item-name">Dashboard</span>
                         </a>
                     </li>
+                    @if(Auth::user()->admin==1)
                     <li class="nav-item">
-                        <a href="admin-profile.php">
+                        <a href="{{ url('admin/profile') }}">
                             <i class="nav-icon i-Bar-Chart"></i>
                             <span class="item-name">Profile</span>
                         </a>
                     </li>
+                        @else
+                        <li class="nav-item">
+                            <a href="{{ url('admin-users22') }}">
+                                <i class="nav-icon i-Bar-Chart"></i>
+                                <span class="item-name">Profile</span>
+                            </a>
+                        </li>
+                    @endif
 
                     <li class="nav-item">
                         <a href="{{ url('admin-users') }}">
@@ -77,7 +86,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="admin-quota.php">
+                        <a href="{{ url('admin/quota') }}">
                             <i class="nav-icon i-Receipt-4"></i>
                             <span class="item-name">Quota Management</span>
                         </a>
