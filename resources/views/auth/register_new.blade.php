@@ -6,6 +6,7 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,400i,600,700,800,900" rel="stylesheet">
     <link href="{{ asset('dist-assets/css/themes/lite-purple.min.css') }}" rel="stylesheet">
     <title>Signin | PCN Premises Registration Portal</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 
 
@@ -32,6 +33,7 @@
                     <div class="p-4">
                         <h1 class="mb-3 text-18">Sign Up</h1>
                         <form method="POST" action="{{ route('register') }}">
+                            @csrf
                             <div class="form-group">
                                 <label for="firstname">Firstname</label>
                                 <input name="first_name" class="form-control form-control @error('name') is-invalid @enderror" id="firstname" type="text" value="{{ old('first_name') }}" required autocomplete="first_name" autofocus>
@@ -70,7 +72,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="picker1">School Type</label>
-                                <select class="form-control @error('phone') is-invalid @enderror" name="school_type" onchange="get_schools(this.value);">
+                                <select  class="form-control @error('phone') is-invalid @enderror" name="school_type" onChange="loadSchools(this.value)">
                                     <option value="" selected="selected">Select</option>
                                     @foreach ($school_categories as $school_category)
                                         <option value="{{ $school_category->id }}">{{ $school_category->category_name }}</option>
@@ -85,29 +87,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="picker1">School Name</label>
-                                <select class="form-control" name="type">
-                                    <option value="" selected="selected">Select</option>
-                                    <option value="Obafemi Awolowo University Ile-Ife">Obafemi Awolowo University Ile-Ife</option>
-                                    <option value="Ahmadu Bello University">Ahmadu Bello University</option>
-                                    <option value="University of Nigeria">University of Nigeria</option>
-                                    <option value="University of Benin">University of Benin</option>
-                                    <option value="University of Lagos">University of Lagos</option>
-                                    <option value="University of Ibadan">University of Ibadan</option>
-                                    <option value="University of Jos">University of Jos</option>
-                                    <option value="Olabisi Onabanjo University">Olabisi Onabanjo University</option>
-                                    <option value="University of Uyo">University of Uyo</option>
-                                    <option value="Niger Delta University">Niger Delta University</option>
-                                    <option value="Madonna University">Madonna University</option>
-                                    <option value="University of Maiduguri">University of Maiduguri</option>
-                                    <option value="Nnamdi Azikiwe University">Nnamdi Azikiwe University</option>
-                                    <option value="Igbinedion University Okada">Igbinedion University Okada</option>
-                                    <option value="University of Port Harcourt">University of Port Harcourt</option>
-                                    <option value="Usmanu Danfodiyo University">Usmanu Danfodiyo University</option>
-                                    <option value="Delta State University">Delta State University</option>
-                                    <option value="University of Ilorin">University of Ilorin</option>
-                                    <option value="Gombe State University">Gombe State University</option>
-                                    <option value="Kaduna State University">Kaduna State University</option>
-                                    <option value="Bayero University">Bayero University</option>
+                                <select id="school_name" class="form-control" name="school_id">
                                 </select>
                             </div>
 
@@ -127,3 +107,22 @@
         </div>
     </div>
 </div>
+
+<script>
+    function loadSchools(id){
+
+        $.ajax({
+            type:'POST',
+            url:'/fetch-schools',
+            data: {
+                "id": id,
+                "_token": "{{ csrf_token() }}",
+            },
+            success:function(data) {
+                $("#school_name").html(data.content);
+
+                // alert(data.content);
+            }
+        });
+    }
+</script>
