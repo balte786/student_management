@@ -19,8 +19,11 @@
                 <div class="card text-left">
                     <div class="card-body">
                         <!--<h4 class="card-title mb-3">Admin Users</h4>-->
+                        @if(Session::has('message'))
+                            <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</p>
+                        @endif
 
-                        <a href="admin-users-add.php"><button class="btn btn-primary" type="button">ADD USER</button></a>
+                        <a href="{{ url('admin-users/create') }}"><button class="btn btn-primary" type="button">ADD USER</button></a>
                         <hr>
 
                         <div class="table-responsive">
@@ -39,14 +42,22 @@
                                 </thead>
                                 <tbody>
                                 @foreach($users as $user)
+                                    <?php
+                                    $status =   'Active';
+                                    $badge  =   'badge-success';
+                                    if($user->approved_at==''){
+                                        $status =   'Disable';
+                                        $badge  =   'badge-warning';
+                                    }
+                                    ?>
                                 <tr>
                                     <td>{{ $user->first_name }} {{ $user->last_name }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td>State Office</td>
 
                                     <td>Lagos</td>
-                                    <td><span class="badge badge-success">ACTIVE</span></td>
-                                    <td><a href="admin-users-view.php"><button class="btn btn-info" type="button">VIEW</button></a></td>
+                                    <td><span class="badge {{ $badge }}">{{ $status }}</span></td>
+                                    <td><a href="{{ url('admin-users/edit/'.$user->id) }}"><button class="btn btn-info" type="button">VIEW</button></a></td>
                                 </tr>
                                 @endforeach
                                 </tbody>
