@@ -19,6 +19,18 @@
                         <div class="auth-logo text-center mb-4"><img src="{{ asset('dist-assets/images/logo.png') }}" alt=""></div>
                         <h1 class="mb-3 text-18">Education Department Portal</h1>
                         <h1 class="mb-3 text-18">Sign In</h1>
+
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+
+                                    @foreach ($errors->all() as $error)
+                                        <span>{{ $error }}</span>
+                                    @endforeach
+
+                            </div>
+                        @endif
+
+
                         <form method="POST" action="{{ route('login') }}">
                             @csrf
                             <div class="form-group">

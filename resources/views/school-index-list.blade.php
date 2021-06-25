@@ -1,22 +1,15 @@
 @extends('layouts.main')
 
 @section('content')
-    <?php   use \App\Http\Controllers\SchoolController; ?>
     <link rel="stylesheet" href="{{ asset('dist-assets/css/plugins/datatables.min.css') }}" />
     <div class="main-content">
         <div class="breadcrumb">
-            <h1 class="mr-2">PCN Education Department | HQ Abuja</h1>
+            <h1 class="mr-2">{{ Auth::user()->school->school_name }}</h1>
             <ul>
-                <li><a href="">Schools Profiles</a></li>
+                <li><a href="">Application for Index Numbers</a></li>
             </ul>
         </div>
-        <div class="separator-breadcrumb border-top">
-
-            @if(Session::has('message'))
-                <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</p>
-            @endif
-
-        </div>
+        <div class="separator-breadcrumb border-top"></div>
         <div class="row">
             <div class="col-lg-12 col-md-12">
 
@@ -25,56 +18,47 @@
 
                 <div class="card text-left">
                     <div class="card-body">
-                        <!--<h4 class="card-title mb-3">Admin Users</h4>
+                        <a href="{{ url('school-index-upload') }}"><button class="btn btn-primary" type="button">APPLY FOR INDEX NUMBERS</button></a>
+                        <hr>
+                        <h4 class="card-title mb-3">Application for Index Numbers</h4>
 
-                        <a href="admin-schools-add.php"><button class="btn btn-primary" type="button">ADD SCHOOL</button></a>
-                        <hr>-->
+                        @if(Session::has('message'))
+                            <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</p>
+                        @endif
 
                         <div class="table-responsive">
                             <table class="display table table-striped table-bordered" id="multicolumn_ordering_table" style="width:100%">
                                 <thead>
                                 <tr>
-
+                                    <th>Date</th>
+                                    <th>Year</th>
                                     <th>School Name</th>
-                                    <th>School Code</th>
-                                    <th>School Type</th>
-                                    <th>School Admin</th>
+                                    <th>Quota</th>
+
+                                    <th>Applications</th>
                                     <th>Status</th>
                                     <th>Action</th>
 
                                 </tr>
                                 </thead>
                                 <tbody>
-
-                                @foreach($schools_profiles as $profile)
+                                @foreach($index_lists as $list)
                                 <tr>
-                                    <td>{{ SchoolController::fetchFeilds('schools','school_name',$profile['school_id']); }}</td>
-                                    <td>{{ SchoolController::fetchFeilds('schools','school_code',$profile['school_id']); }}</td>
-                                    <td>{{ SchoolController::fetchFeilds('school_categories','category_name',$profile['category_id']); }}</td>
+                                    <td>{{ date('d/M/Y', strtotime($list->created_at)) }}</td>
+                                    <td>{{ $list->year }}</td>
+                                    <td>{{ $list->school_name }}</td>
+                                    <td>26</td>
 
-                                    <td>{{$profile['first_name']}} {{$profile['last_name']}}</td>
-                                    <td>
+                                    <td>{{ $list->quota }}</td>
+                                    @if($list->status==1)
+                                        <td><span class="badge badge-success">APPROVED</span></td>
+                                        <td><a href="school-index-approved.php"><button class="btn btn-success" type="button"><i class="nav-icon i-Folder-Download"></i></button></a></td>
+                                    @else
+                                        <td><span class="badge badge-warning">PENDING</span></td>
+                                        <td></td>
+                                    @endif
 
-                                        @if($profile['status']=='0')
-
-                                        <span class="badge badge-warning">PENDING APPROVAL</span>
-
-                                        @elseif($profile['status']=='1')
-
-                                            <span class="badge badge-success">ACTIVE</span>
-
-                                        @elseif($profile['status']=='2')
-
-                                            <span class="badge badge-danger">REJECTED</span>
-
-
-                                        @endif
-
-
-                                    </td>
-                                    <td><a href="{{url('admin-schools-profiles-view',[$profile['id']])}}"><button class="btn btn-info" type="button">VIEW</button></a></td>
                                 </tr>
-
                                 @endforeach
 
                                 </tbody>
@@ -118,7 +102,5 @@
             </div>
         </div>
     <!-- fotter end -->
-    </div>
-    </div>
     </div>
 @endsection
