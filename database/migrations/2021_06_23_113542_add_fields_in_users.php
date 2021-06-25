@@ -19,6 +19,7 @@ class AddFieldsInUsers extends Migration
             $table->double('phone_number')->after('email')->nullable();
             $table->integer('category_id')->unsigned();
             $table->integer('school_id')->unsigned();
+            $table->enum('status', [0,1,2]);
             $table->boolean('admin')->default(false);
             $table->timestamp('approved_at')->nullable();
 
