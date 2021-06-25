@@ -16,6 +16,7 @@ class CreateSchoolCategories extends Migration
         Schema::create('school_categories', function (Blueprint $table) {
             $table->increments('id');
             $table->string('category_name');
+            $table->string('category_title');
             $table->timestamps();
         });
     }

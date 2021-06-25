@@ -3,9 +3,9 @@
 @section('content')
     <div class="main-content">
         <div class="breadcrumb">
-            <h1 class="mr-2">PCN Education Department | HQ Abuja</h1>
+            <h1 class="mr-2">{{ Auth::user()->school->school_name }}</h1>
             <ul>
-                <li><a href="">Admission Quota Management</a></li>
+                <li><a href="">Application for Index Numbers</a></li>
             </ul>
         </div>
         <div class="separator-breadcrumb border-top"></div>
@@ -15,19 +15,31 @@
                 <div class="card text-left">
 
                     <div class="card-body">
-                        <h4 class="card-title mb-3">Adminission Quota Upload</h4>
+                        <h4 class="card-title mb-3">Application for Index Numbers</h4>
 
                         <div class="row">
                             <div class="col-lg-12 col-md-12">
-                                <p>Download the Quota Template and complete accordingly</p>
+                                <p>Download the Indexing Template and complete accordingly</p>
                                 <button class="btn btn-primary btn-icon m-1" type="button"><span class="ul-btn__icon"><i class="i-File-Excel"></i></span><span class="ul-btn__text">DOWNLOAD UNIVERSIY QUOTA TEMPLATE</span></button>
                                 <button class="btn btn-primary btn-icon m-1" type="button"><span class="ul-btn__icon"><i class="i-File-Excel"></i></span><span class="ul-btn__text">DOWNLOAD SCHOOL OF HEALTH TECHNOLOGY QUOTA TEMPLATE</span></button>
 
                             </div>
                             <div class="col-lg-12 col-md-12">
-                                <p>Upload the completed Quota Template and select the year</p>
-                                <form action="{{ URL::to('admin/quota-import') }}" method="POST" enctype="multipart/form-data">
+                                <p>Upload the completed Indexing Template and select the year</p>
+                                <form action="{{ url('school-index-import') }}" method="POST" enctype="multipart/form-data">
                                     @csrf
+                                    @if ($errors->any())
+                                        <div class="alert alert-danger">
+                                            <ul>
+                                                @foreach ($errors->all() as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endif
+                                    @if(Session::has('message'))
+                                        <p class="alert {{ Session::get('alert-class', 'alert-warning') }}">{{ Session::get('message') }}</p>
+                                    @endif
                                     <div class="row">
                                         <div class="col-md-4 form-group mb-3 input-group">
 
@@ -38,15 +50,6 @@
                                                 <option value="2023">2023</option>
                                                 <option value="2024">2024</option>
                                                 <option value="2025">2025</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-4 form-group mb-3 input-group">
-
-                                            <select name="category_id" class="form-control" >
-                                                <option value="" selected>Institution Category</option>
-                                                <option value="1">University</option>
-                                                <option value="2">School of Health Technology</option>
-
                                             </select>
                                         </div>
                                         <div class="col-md-4 form-group mb-3 input-group">

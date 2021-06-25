@@ -84,7 +84,6 @@ class SchoolController extends Controller
     static function fetchFeilds($table,$feild,$id){
 
         $category = DB::table($table)->find($id);
-
         return $category->$feild;
     }
 

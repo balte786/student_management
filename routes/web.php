@@ -18,7 +18,7 @@ Route::get('/', function () {
 });
 Route::get('/logout', function(){
     Auth::logout();
-    return Redirect::to('login');
+    return Redirect::to('/');
 });
 Route::post('/fetch-schools', [App\Http\Controllers\SchoolController::class, 'fetchSchools']);
 
@@ -31,6 +31,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware(['approved'])->group(function () {
         Route::get('/dashboard', [App\Http\Controllers\AdminController::class, 'index'])->name('dashboard');
+        Route::get('/school-index-list', [App\Http\Controllers\IndexManagementController::class, 'index']);
+        Route::get('/school-index-upload', [App\Http\Controllers\IndexManagementController::class, 'index_upload']);
+        Route::post('/school-index-import', [App\Http\Controllers\IndexManagementController::class, 'school_index_import']);
 
     });
 
