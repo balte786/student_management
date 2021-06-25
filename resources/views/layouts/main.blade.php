@@ -65,13 +65,13 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="admin-schools.php">
+                        <a href="{{ url('admin-schools') }}">
                             <i class="nav-icon i-Receipt-4"></i>
                             <span class="item-name">Schools</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="admin-schools-profiles.php">
+                        <a href="{{ url('admin-schools-profiles') }}">
                             <i class="nav-icon i-Receipt-4"></i>
                             <span class="item-name">Schools Profile Users</span>
                         </a>
