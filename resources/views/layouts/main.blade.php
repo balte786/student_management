@@ -60,13 +60,13 @@
                     </li>
                         @else
                         <li class="nav-item">
-                            <a href="{{ url('admin-users22') }}">
+                            <a href="{{ url('profile') }}">
                                 <i class="nav-icon i-Bar-Chart"></i>
                                 <span class="item-name">Profile</span>
                             </a>
                         </li>
                     @endif
-
+                    @if(Auth::user()->admin==1)
                     <li class="nav-item">
                         <a href="{{ url('admin-users') }}">
                             <i class="nav-icon i-Receipt-4"></i>
@@ -91,12 +91,22 @@
                             <span class="item-name">Quota Management</span>
                         </a>
                     </li>
+
                     <li class="nav-item">
                         <a href="admin-index-list.php">
                             <i class="nav-icon i-Receipt-4"></i>
                             <span class="item-name">Index Management</span>
                         </a>
                     </li>
+                        @else
+                        <li class="nav-item">
+                            <a href="admin-index-list.php">
+                                <i class="nav-icon i-Receipt-4"></i>
+                                <span class="item-name">Index Number</span>
+                            </a>
+                        </li>
+                    @endif
+
                 </ul>
             </div>
 
@@ -131,7 +141,7 @@
                             </div>
                             <a class="dropdown-item" href="#">Profile Settings</a>
                             <a class="dropdown-item" href="#">Billing History</a>
-                            <a class="dropdown-item" href="index.php">Sign Out</a>
+                            <a class="dropdown-item" href="{{ route('logout') }}">Sign Out</a>
                         </div>
                     </div>
                 </div>

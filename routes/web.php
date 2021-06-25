@@ -16,6 +16,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('auth.login');
 });
+Route::get('/logout', function(){
+    Auth::logout();
+    return Redirect::to('login');
+});
 Route::post('/fetch-schools', [App\Http\Controllers\SchoolController::class, 'fetchSchools']);
 
 Auth::routes(['verify' => true]);
@@ -27,6 +31,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware(['approved'])->group(function () {
         Route::get('/dashboard', [App\Http\Controllers\AdminController::class, 'index'])->name('dashboard');
+
     });
 
     Route::middleware(['admin'])->group(function () {

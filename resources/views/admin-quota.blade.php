@@ -13,7 +13,7 @@
             <div class="col-lg-12 col-md-12">
                 <h2 class=" mb-6">Admission Quota Management</h2>
                 <hr>
-                <a href="{{ url('admin/importExportView') }}"><button class="btn btn-primary" type="button">ADD NEW YEARLY QUOTA</button></a>
+                <a href="{{ url('admin/admin-quota-upload') }}"><button class="btn btn-primary" type="button">ADD NEW YEARLY QUOTA</button></a>
                 <hr>
                 <!--begin::form-->
                 <div class="row">

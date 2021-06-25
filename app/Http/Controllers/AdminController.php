@@ -101,10 +101,11 @@ class AdminController extends Controller
         if($request->status==1){
             $user->approved_at = now();
         }
+        $user->status= $request->status;
         $user->school_id         =   1;
         $user->admin         =   1;
         $random_password         =   substr(md5(microtime()),rand(0,26),8);
-        $user->password          =   $random_password;
+        $user->password          =   Hash::make($random_password);
         if($user->save()) {
 
             $site_url   =   url('/');
@@ -151,6 +152,7 @@ class AdminController extends Controller
         $user->phone_number     =   $request->phone;
         $user->email             =   $request->email;
         $user->category_id       =   $request->category_id;
+        $user->status           =  $request->status;
         if($request->status==1){
             $user->approved_at = now();
         }else{
