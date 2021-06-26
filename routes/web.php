@@ -31,6 +31,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware(['approved'])->group(function () {
         Route::get('/dashboard', [App\Http\Controllers\AdminController::class, 'index'])->name('dashboard');
+        Route::get('/school-dashboard', [App\Http\Controllers\AdminController::class, 'school_dashboard']);
+        Route::get('profile', [App\Http\Controllers\AdminController::class, 'school_profile']);
+        Route::post('profile-update', [App\Http\Controllers\AdminController::class, 'school_profile_update']);
+
         Route::get('/school-index-list', [App\Http\Controllers\IndexManagementController::class, 'index']);
         Route::get('/school-index-upload', [App\Http\Controllers\IndexManagementController::class, 'index_upload']);
         Route::post('/school-index-import', [App\Http\Controllers\IndexManagementController::class, 'school_index_import']);
@@ -51,7 +55,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/approve-user-profile/{id}', [App\Http\Controllers\AdminController::class, 'approve_user_profile']);
         Route::get('/reject-user-profile/{id}', [App\Http\Controllers\AdminController::class, 'reject_user_profile']);
 
-
+        Route::get('/admin-dashboard', [App\Http\Controllers\AdminController::class, 'admin_dashboard']);
         Route::get('/admin-users/create', [App\Http\Controllers\AdminController::class, 'user_create']);
         Route::post('/admin-users/store-user', [App\Http\Controllers\AdminController::class, 'user_store']);
         Route::get('admin-users/edit/{id}',[App\Http\Controllers\AdminController::class, 'user_edit']);

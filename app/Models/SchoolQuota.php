@@ -15,4 +15,6 @@ class SchoolQuota extends Model
     ];
 
     public $timestamps = false;
+
+
 }

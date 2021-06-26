@@ -118,7 +118,11 @@ class SchoolController extends Controller
 
     }
 
+    static function fetchTotalCounts($cat_id,$feild_name){
 
+        return School::where($feild_name,$cat_id)->count();
+
+    }
 
 
 

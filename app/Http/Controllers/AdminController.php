@@ -11,6 +11,7 @@ use App\Mail\MailAdminPassword;
 use App\Models\SchoolQuota;
 use App\Imports\QuotaImport;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Hash;
 
 use DB;
 
@@ -213,6 +214,7 @@ class AdminController extends Controller
         $user->phone_number     =   $request->phone;
         $user->email             =   $request->email;
         $user->category_id       =   $request->category_id;
+        $user->password          =   Hash::make($request->password);
         if($request->status==1){
             $user->approved_at = now();
         }else{
@@ -254,5 +256,61 @@ class AdminController extends Controller
         Excel::import(new QuotaImport($request->year,$request->category_id),request()->file('file'));
         $request->session()->flash('message', 'Successfully uploaded the quota');
         return redirect('admin/quota');
+    }
+
+    public function admin_dashboard(){
+
+        $data['page'] = 'Admin Dashboard';
+        return view('admin_dashboard', $data);
+    }
+
+    static function fetchTotalCounts($cat_id,$feild_name){
+
+        return User::where($feild_name,$cat_id)->count();
+
+    }
+
+    public function school_dashboard(){
+
+        $data['page'] = 'School Dashboard';
+        $data['myquotas'] = SchoolQuota::where('school_id',Auth::user()->school_id)->get();
+
+
+        return view('school-dashboard', $data);
+    }
+
+    public function school_profile(){
+
+        $data['page'] = 'School Profile';
+        $data['school_types']  =  SchoolCategory::all();
+        $data['user']  = User::where('id',Auth::user()->id)->first();
+        return view('profile', $data);
+    }
+
+    public function school_profile_update(Request $request){
+
+        $this->validate($request, [
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'email' => 'required|email|unique:users,email,'.Auth::user()->id,
+            'phone'=> ['required', 'string', 'max:255'],
+
+
+        ]);
+
+        $user   =   User::find(Auth::user()->id);
+        $user->first_name        =   $request->first_name;
+        $user->last_name         =   $request->last_name;
+        $user->name              =   $request->first_name.' '.$request->last_name;
+        $user->phone_number     =   $request->phone;
+        $user->email             =   $request->email;
+
+
+        if($user->save()) {
+            $request->session()->flash('message', 'Successfully updated your profile!');
+        }else
+            $request->session()->flash('message', 'Something wrong please try again!');
+        return redirect('profile');
+
     }
 }

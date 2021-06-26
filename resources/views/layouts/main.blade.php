@@ -41,31 +41,40 @@
             <div class="submenu-area" data-parent="admin">
                 <header>
                     <h6>PCN Education</h6>
-                    <p>Admin</p>
+                    <p>{{Auth::user()->first_name}}</p>
 
                 </header>
                 <ul class="childNav">
                     <li class="nav-item">
-                        <a href="admin-dashboard.php">
+
+                        <?php
+
+                        $user = Auth::user();
+                        if($user->admin==1){
+
+                            $urlwillbe  =   "admin-dashboard";
+                            $profileurl =   "admin/profile";
+                        }else{
+
+                            $urlwillbe  =   "school-dashboard";
+                            $profileurl =   "profile";
+                        }
+
+                        ?>
+
+                        <a href="{{url($urlwillbe)}}">
                             <i class="nav-icon i-Bar-Chart"></i>
                             <span class="item-name">Dashboard</span>
                         </a>
                     </li>
-                    @if(Auth::user()->admin==1)
+
                     <li class="nav-item">
-                        <a href="{{ url('admin/profile') }}">
+                        <a href="{{ url($profileurl) }}">
                             <i class="nav-icon i-Bar-Chart"></i>
                             <span class="item-name">Profile</span>
                         </a>
                     </li>
-                        @else
-                        <li class="nav-item">
-                            <a href="{{ url('profile') }}">
-                                <i class="nav-icon i-Bar-Chart"></i>
-                                <span class="item-name">Profile</span>
-                            </a>
-                        </li>
-                    @endif
+
                     @if(Auth::user()->admin==1)
                     <li class="nav-item">
                         <a href="{{ url('admin-users') }}">
@@ -137,9 +146,12 @@
                         <img src="{{ asset('dist-assets/images/faces/1.jpg') }}" id="userDropdown" alt="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                             <div class="dropdown-header">
-                                <i class="i-Lock-User mr-1"></i> Ademola Davies
+                                <i class="i-Lock-User mr-1"></i> {{Auth::user()->first_name}} {{Auth::user()->last_name}}
                             </div>
-                            <a class="dropdown-item" href="#">Profile Settings</a>
+
+
+
+                            <a class="dropdown-item" href="{{url($profileurl)}}">Profile Settings</a>
                             <a class="dropdown-item" href="#">Billing History</a>
                             <a class="dropdown-item" href="{{ route('logout') }}">Sign Out</a>
                         </div>
