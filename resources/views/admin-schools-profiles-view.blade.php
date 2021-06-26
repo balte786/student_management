@@ -59,7 +59,7 @@
 
                             <div class="col-md-12">
 
-                                @if($user_details['status']=='0')
+                                @if($user_details['status']=='0' || $user_details['status']=='2')
                                     <a onclick="confirm('Are you sure do you want to activate this user?')" href="{{url('approve-user-profile',[$user_details['id']])}}" class="btn btn-primary">APPROVE</a>
                                 @endif
 
