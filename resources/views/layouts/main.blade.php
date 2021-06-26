@@ -109,7 +109,7 @@
                     </li>
                         @else
                         <li class="nav-item">
-                            <a href="admin-index-list.php">
+                            <a href="{{ url('school-index-list') }}">
                                 <i class="nav-icon i-Receipt-4"></i>
                                 <span class="item-name">Index Number</span>
                             </a>

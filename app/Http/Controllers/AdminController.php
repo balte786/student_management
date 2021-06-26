@@ -25,9 +25,26 @@ class AdminController extends Controller
     public function index()
     {
 
-            $data = [];
-            $data['page'] = 'dashboard';
-            return view('dashboard', $data);
+            if(Auth::user()->admin){
+                $data = [];
+                $data['page'] = 'dashboard';
+                return view('dashboard', $data);
+            }else{
+                $data = [];
+
+                $data['yearly_quota']   =   SchoolQuota::where('school_id',Auth::user()->school_id)
+                    ->orderby('year','ASC')
+                    ->pluck('quota')->toArray();
+                $data['years']   =   SchoolQuota::where('school_id',Auth::user()->school_id)
+                    ->orderby('year','ASC')
+                    ->pluck('year')->toArray();
+                $data['quotas']   =   SchoolQuota::where('school_id',Auth::user()->school_id)
+                    ->orderby('year','ASC')->get();
+
+                $data['page'] = 'dashboard';
+                return view('front-dashboard', $data);
+            }
+
     }
 
     public function admin_users(){
@@ -39,7 +56,8 @@ class AdminController extends Controller
 
     public function admin_schools_profiles(){
 
-        $data['schools_profiles']  =   User::where('admin','0')->orderBy('id','DESC')->get();
+        $data['schools_profiles']  =   User::where('admin' ,'0')->orderBy('id','DESC')->get();
+
         return view('admin-schools-profiles', $data);
     }
 
@@ -55,7 +73,7 @@ class AdminController extends Controller
 
         $user   =   User::find($id);
 
-        $user->status   =   1;
+        $user->status   =   '1';
         $user->approved_at   =   now();
 
         if($user->save()) {
@@ -229,6 +247,12 @@ class AdminController extends Controller
 
     public function import(Request $request)
     {
+        $this->validate($request, [
+            'year' => 'required',
+            'category_id'=> 'required',
+            'file' => 'required|max:10000|mimes:xlsx'
+
+        ]);
         Excel::import(new QuotaImport($request->year,$request->category_id),request()->file('file'));
         $request->session()->flash('message', 'Successfully uploaded the quota');
         return redirect('admin/quota');

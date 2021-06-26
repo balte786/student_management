@@ -14,14 +14,8 @@ class AddFieldsInUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('first_name')->after('id')->nullable();
-            $table->string('last_name')->nullable();
-            $table->double('phone_number')->after('email')->nullable();
-            $table->integer('category_id')->unsigned();
-            $table->integer('school_id')->unsigned();
-            $table->enum('status', [0,1,2]);
-            $table->boolean('admin')->default(false);
-            $table->timestamp('approved_at')->nullable();
+            $table->integer('category_id')->after('id')->unsigned();
+            $table->integer('school_id')->after('id')->unsigned();
 
             $table->foreign('category_id')
                 ->references('id')
@@ -32,10 +26,6 @@ class AddFieldsInUsers extends Migration
                 ->references('id')
                 ->on('schools')
                 ->onDelete('cascade');
-
-
-
-
 
         });
     }

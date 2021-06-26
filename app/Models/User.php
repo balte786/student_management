@@ -49,10 +49,10 @@ class User extends Authenticatable implements MustVerifyEmail
 
 
     public function school_category(){
-        return $this->belongsTo('App\Model\SchoolCategory', 'category_id');
+        return $this->belongsTo(SchoolCategory::class, 'category_id');
     }
 
     public function school(){
-        return $this->belongsTo('App\Model\School', 'school_id');
+        return $this->belongsTo(School::class, 'school_id');
     }
 }
