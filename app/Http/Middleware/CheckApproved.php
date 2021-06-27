@@ -17,10 +17,10 @@ class CheckApproved
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!auth()->user()->approved_at && auth()->user()->email_verified_at!='') {
-            Auth::logout();
-            return redirect('/login')->withErrors('Your account is waiting for our administrator approval');
-            //return redirect()->route('approval');
+        if (!auth()->user()->approved_at) {
+            //Auth::logout();
+            //return redirect('/login')->withErrors('Your account is waiting for our administrator approval');
+            return redirect()->route('approval');
         }
 
         return $next($request);
