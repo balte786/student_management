@@ -216,7 +216,11 @@ class AdminController extends Controller
         $user->phone_number     =   $request->phone;
         $user->email             =   $request->email;
         $user->category_id       =   $request->category_id;
-        $user->password          =   Hash::make($request->password);
+
+        if($request->password) {
+            $user->password = Hash::make($request->password);
+
+        }
         if($request->status==1){
             $user->approved_at = now();
         }else{
