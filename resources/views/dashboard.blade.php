@@ -1,6 +1,10 @@
 @extends('layouts.main')
 
 @section('content')
+
+    <?php   use \App\Http\Controllers\SchoolController;
+    use \App\Http\Controllers\AdminController;
+    ?>
     <div class="main-content">
         <div class="breadcrumb">
             <h1 class="mr-2">PCN Education Department | HQ Abuja</h1>
@@ -17,7 +21,11 @@
                         <div class="card card-icon mb-4">
                             <div class="card-body text-center"><i class="i-Diploma-2"></i>
                                 <p class="text-muted mt-2 mb-2">School of Health Technology</p>
-                                <p class="text-primary text-50 line-height-1 m-0">50</p>
+                                <p class="text-primary text-50 line-height-1 m-0">
+
+                                    {{ SchoolController::fetchTotalCounts('1','category_id'); }}
+
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -26,7 +34,7 @@
                         <div class="card card-icon mb-4">
                             <div class="card-body text-center"><i class="i-Diploma-2"></i>
                                 <p class="text-muted mt-2 mb-2">University</p>
-                                <p class="text-primary text-50 line-height-1 m-0">35</p>
+                                <p class="text-primary text-50 line-height-1 m-0">{{ SchoolController::fetchTotalCounts('2','category_id'); }}</p>
                             </div>
                         </div>
                     </div>
@@ -42,7 +50,7 @@
                         <div class="card card-icon mb-4">
                             <div class="card-body text-center"><i class="i-Administrator"></i>
                                 <p class="text-muted mt-2 mb-2">Administrators</p>
-                                <p class="text-primary text-50 line-height-1 m-0">35</p>
+                                <p class="text-primary text-50 line-height-1 m-0">{{ AdminController::fetchTotalCounts('1','admin'); }}</p>
                             </div>
                         </div>
                     </div>
@@ -51,6 +59,14 @@
                 </div>
             </div>
 
+            <!--<div class="col-lg-4 col-md-12">
+                <div class="card mb-4">
+                    <div class="card-body p-0">
+                        <h5 class="card-title m-0 p-3">Sales</h5>
+                        <div id="echart4" style="height: 300px"></div>
+                    </div>
+                </div>
+            </div>-->
 
 
 
@@ -81,6 +97,8 @@
                 </div>
             </div>
         </div>
-    <!-- fotter end -->
+        <!-- fotter end -->
+    </div>
+    </div>
     </div>
 @endsection

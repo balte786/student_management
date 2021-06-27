@@ -7,6 +7,8 @@ use Auth;
 use Mail;
 use App\Models\User;
 use App\Models\SchoolCategory;
+use App\Models\Student;
+use App\Models\IndexManagement;
 use App\Mail\MailAdminPassword;
 use App\Models\SchoolQuota;
 use App\Imports\QuotaImport;
@@ -311,6 +313,31 @@ class AdminController extends Controller
         }else
             $request->session()->flash('message', 'Something wrong please try again!');
         return redirect('profile');
+
+    }
+
+    public function admin_index_list(){
+
+        $data['title'] = 'Admin index list';
+        $data['page'] = 'Admin index list';
+        $data['index_lists']    = IndexManagement::select('index_managements.id','index_managements.status','index_managements.created_at', 'schools.school_name','school_quotas.year','school_quotas.quota')
+            ->join('schools','index_managements.school_id', '=', 'schools.id')
+            ->join('school_quotas','index_managements.quota_id', '=', 'school_quotas.id')
+             ->orderby('index_managements.year','desc')
+            ->get();
+
+
+        return view('admin-index-list', $data);
+    }
+
+    public function admin_index_pending($index_id){
+
+        $data['title'] = 'Admin index list';
+        $data['page'] = 'Admin index list';
+        $data['student_lists']    = Student::where('index_id',$index_id)->get();
+
+
+        return view('admin-index-pending', $data);
 
     }
 }

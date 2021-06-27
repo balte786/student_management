@@ -25,8 +25,14 @@ class IndexImport implements ToCollection, WithHeadingRow
     }
     public function collection(Collection $rows)
     {
+
+        //echo $this->year.' - '.$this->school_id.' - '.$this->quota_id.' - '.$this->index_id; exit;
+
         $i=1;
         foreach ($rows as $row) {
+//echo "<pre>";
+            //print_r($row); exit;
+
             $index_number   ='PCN/'.Auth::user()->school->school_code.'/'.substr($this->year, -2).'/'.sprintf("%04d", $i);
 
 

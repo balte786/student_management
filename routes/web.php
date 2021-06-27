@@ -38,6 +38,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/school-index-list', [App\Http\Controllers\IndexManagementController::class, 'index']);
         Route::get('/school-index-upload', [App\Http\Controllers\IndexManagementController::class, 'index_upload']);
         Route::post('/school-index-import', [App\Http\Controllers\IndexManagementController::class, 'school_index_import']);
+        Route::get('/school-index-approved/{id}', [App\Http\Controllers\IndexManagementController::class, 'school_index_approved']);
+        Route::get('/school-index-upload-doc/{id}', [App\Http\Controllers\IndexManagementController::class, 'school_index_upload_doc']);
+        Route::post('/upload-students-docs-ajax', [App\Http\Controllers\IndexManagementController::class, 'upload_student_docs_ajax']);
+        Route::get('/school-index-submission', [App\Http\Controllers\IndexManagementController::class, 'school_index_submission']);
+
 
     });
 
@@ -54,8 +59,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin-schools-profiles-view/{id}', [App\Http\Controllers\AdminController::class, 'admin_schools_profiles_view']);
         Route::get('/approve-user-profile/{id}', [App\Http\Controllers\AdminController::class, 'approve_user_profile']);
         Route::get('/reject-user-profile/{id}', [App\Http\Controllers\AdminController::class, 'reject_user_profile']);
-
-        Route::get('/admin-dashboard', [App\Http\Controllers\AdminController::class, 'admin_dashboard']);
         Route::get('/admin-users/create', [App\Http\Controllers\AdminController::class, 'user_create']);
         Route::post('/admin-users/store-user', [App\Http\Controllers\AdminController::class, 'user_store']);
         Route::get('admin-users/edit/{id}',[App\Http\Controllers\AdminController::class, 'user_edit']);
@@ -67,6 +70,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('admin/admin-quota-upload', [App\Http\Controllers\AdminController::class, 'quota_upload']);
         Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('admin.users.index');
         Route::get('/users/{user_id}/approve', [App\Http\Controllers\UserController::class, 'approve'])->name('admin.users.approve');
+        Route::get('/admin-index-list', [App\Http\Controllers\AdminController::class, 'admin_index_list']);
+        Route::get('/admin-index-pending/{id}', [App\Http\Controllers\AdminController::class, 'admin_index_pending']);
+
     });
 });
 

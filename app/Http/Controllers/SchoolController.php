@@ -84,7 +84,7 @@ class SchoolController extends Controller
     static function fetchFeilds($table,$feild,$id){
 
         $category = DB::table($table)->find($id);
-        return $category->$feild;
+        return @$category->$feild;
     }
 
     public function update_school(request $request,$id){
@@ -124,6 +124,12 @@ class SchoolController extends Controller
 
     }
 
+    static function fetchFeildsFiles($id){
 
+        //echo "in control"; exit;
+
+        $category = DB::table('student_files')->where('student_id',$id)->first();
+        return @$category->file_name;
+    }
 
 }

@@ -55,7 +55,7 @@
                                         <td><a href="{{ url('school-index-approved',[$list->id])}}"><button class="btn btn-success" type="button"><i class="nav-icon i-Folder-Download"></i></button></a></td>
                                     @else
                                         <td><span class="badge badge-warning">PENDING</span></td>
-                                        <td></td>
+                                        <td><a href="{{ url('admin-index-pending',[$list->id])}}"><button class="btn btn-warning" type="button"><i class="nav-icon i-Folder-Download"></i></button></a></td>
 
                                     @endif
 
