@@ -18,6 +18,7 @@ class CreateStudentsTable extends Migration
             $table->integer('school_id')->unsigned();
             $table->integer('quota_id')->unsigned();
             $table->integer('index_id')->unsigned();
+            $table->enum('status', [0,1]);
             $table->string('index_number')->nullable();
             $table->string('first_name')->nullable();
             $table->string('middle_name')->nullable();
