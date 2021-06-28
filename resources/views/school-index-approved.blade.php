@@ -53,12 +53,13 @@
                                             //echo "i am student=".$student['id'];
                                             $filename = SchoolController::fetchFeildsFiles($student['id']);
 
-                                        //echo "filenamemee=".$filename; exit;
+                                        $schoolCode    = SchoolController::fetchFeildsGeric('schools','school_code','id',$student['school_id']);
+                                        $year    = SchoolController::fetchFeildsGeric('index_managements','year','id',$student['index_id']);
                                         ?>
 
                                         @if($filename)
 
-                                        <a href="{{ asset('student_files/'.$filename.'') }}" class="btn btn-primary btn-icon m-1" type="button"><span class="ul-btn__text">DOWNLOAD DOCUMENTS</span></a>
+                                        <a target="_blank" href="{{ asset('student_files/'.$schoolCode.'/'.$year.'/'.$student['id'].'/'.$filename.'') }}" class="btn btn-primary btn-icon m-1" type="button"><span class="ul-btn__text">DOWNLOAD DOCUMENTS</span></a>
 
                                         @else
 
