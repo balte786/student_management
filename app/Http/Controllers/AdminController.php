@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\StudentsExport;
+use App\Models\School;
 use Illuminate\Http\Request;
 use Auth;
 use Mail;
@@ -353,6 +355,7 @@ class AdminController extends Controller
 
         $data['title'] = 'Admin index list';
         $data['page'] = 'Admin index list';
+        $data['index_id']   =   $index_id;
         $data['student_lists']    = Student::where('index_id',$index_id)->get();
 
 
@@ -414,6 +417,16 @@ class AdminController extends Controller
     static function fetchTotalStudentCounts($cat_id,$feild_name){
 
         return Student::where($feild_name,$cat_id)->count();
+
+    }
+
+    public function export_index($index_id){
+
+        $index_rec  =   IndexManagement::where('id',$index_id)->first();
+        $schools    =   School::where('id',$index_rec->school_id)->first();
+        $file_name  =   $schools->school_code.'_'.$index_rec->year;
+
+        return Excel::download(new StudentsExport($index_id), $file_name.'.xlsx');
 
     }
 }

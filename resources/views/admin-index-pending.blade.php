@@ -35,7 +35,7 @@
                     <div class="card-body">
 
                         <h2 class="card-title mb-1">2021 Application for Index Numbers</h2>
-                        <button class="btn btn-primary btn-icon m-1" type="button"><span class="ul-btn__text">DOWNLOAD LIST OF STUDENTS (EXCEL)</span></button>
+                        <a href="{{ URL::to('admin/export-index/'.$index_id) }}"><button class="btn btn-primary btn-icon m-1" type="button"><span class="ul-btn__text">DOWNLOAD LIST OF STUDENTS (EXCEL)</span></button></a>
                         
                          <form name="pending_st_form" action="{{url('approve-students')}}" method="post">
                          
