@@ -72,6 +72,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/users/{user_id}/approve', [App\Http\Controllers\UserController::class, 'approve'])->name('admin.users.approve');
         Route::get('/admin-index-list', [App\Http\Controllers\AdminController::class, 'admin_index_list']);
         Route::get('/admin-index-pending/{id}', [App\Http\Controllers\AdminController::class, 'admin_index_pending']);
+		Route::post('/approve-students', [App\Http\Controllers\AdminController::class, 'approve_students']);
+		
 
     });
 });

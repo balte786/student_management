@@ -10,6 +10,8 @@ use App\Models\SchoolCategory;
 use App\Models\Student;
 use App\Models\IndexManagement;
 use App\Mail\MailAdminPassword;
+use App\Mail\MailIndexApproved;
+use App\Mail\MailUserAprrovedAdmin;
 use App\Models\SchoolQuota;
 use App\Imports\QuotaImport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -79,6 +81,19 @@ class AdminController extends Controller
         $user->approved_at   =   now();
 
         if($user->save()) {
+			
+			$site_url   =   url('/');
+            $email_data = array(
+                'first_name'=>$user->first_name,
+                'site_url'=>$site_url
+            );
+            try{ 
+			Mail::to($user->email)->send(new MailUserAprrovedAdmin($email_data));
+			}
+            catch(\Exception $e){
+			
+				}
+			
             $request->session()->flash('message', 'User Has Been Activated Successfully!');
             return redirect('admin-schools-profiles');
         }
@@ -342,6 +357,63 @@ class AdminController extends Controller
 
 
         return view('admin-index-pending', $data);
+
+    }
+	
+	public function approve_students(request $request){
+		
+		
+		 $this->validate($request, [
+            'student_ids' => 'required'
+
+        ]);
+	
+	
+	$index_id	=	$request->index_id;
+	$student_ids	=	array();
+	
+	$student_ids	=	$request->student_ids;
+	
+	for($i=0;$i<count($student_ids); $i++){
+		
+		$values = array('status' => '1');
+         DB::table('students')->where('id',$student_ids[$i])->update($values);
+		 
+		
+		}
+	$values2 = array('status' => '1');
+	$index	=	 IndexManagement::find($index_id);
+	$index->status = '1';
+	if($index->save()){
+		$user_record = User::where('school_id',$request->school_id)->first();
+		$site_url   =   url('/');
+            $email_data = array(
+                'first_name'=>$user_record->first_name,
+				'year'=>$index->year,
+                'site_url'=>$site_url
+            );
+            try{ 
+			Mail::to($user_record->email)->send(new MailIndexApproved($email_data));
+			}
+            catch(\Exception $e){
+			
+				}
+	
+	
+		
+	}
+	//DB::table('index_managements')->where('id',$index_id)->update($values2);
+	
+	$request->session()->flash('message', 'Student has been approved Successfully!');
+	 
+	
+	 return redirect('admin-index-pending/'.$index_id);
+		
+	}
+
+    static function fetchTotalStudentCounts($cat_id,$feild_name){
+
+        return Student::where($feild_name,$cat_id)->count();
 
     }
 }

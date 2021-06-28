@@ -42,7 +42,7 @@
                         <div class="card card-icon mb-4">
                             <div class="card-body text-center"><i class="i-Student-MaleFemale"></i>
                                 <p class="text-muted mt-2 mb-2">Students</p>
-                                <p class="text-primary text-50 line-height-1 m-0">35</p>
+                                <p class="text-primary text-50 line-height-1 m-0">{{ AdminController::fetchTotalStudentCounts('1','status'); }}</p>
                             </div>
                         </div>
                     </div>
