@@ -1,17 +1,19 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Mail;
 use Illuminate\Http\Request;
 use App\Models\IndexManagement;
 use App\Models\School;
 use Auth;
+use App\Mail\MailIndexNumberUploaded;
 use App\Imports\IndexImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\SchoolQuota;
 use App\Models\Student;
 use Illuminate\Support\Facades\Validator;
 use DB;
+
 
 class IndexManagementController extends Controller
 {
@@ -183,6 +185,21 @@ class IndexManagementController extends Controller
     }
 
     public function school_index_submission(request $request){
+
+        $first_name     =   Auth::user()->first_name;
+        $email     =   Auth::user()->email;
+
+        $site_url   =   url('/');
+        $email_data = array(
+            'first_name'=>$first_name,
+            'site_url'=>$site_url
+        );
+        try{
+            Mail::to($email)->send(new MailIndexNumberUploaded($email_data));
+        }
+        catch(\Exception $e){
+
+        }
 
         $request->session()->flash('message', 'Successfully uploaded the index');
         return redirect('school-index-list');

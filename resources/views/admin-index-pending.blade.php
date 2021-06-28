@@ -10,7 +10,22 @@
                 <li><a href="">Index Number Management</a></li>
             </ul>
         </div>
-        <div class="separator-breadcrumb border-top"></div>
+        <div class="separator-breadcrumb border-top">
+        
+         @if(Session::has('message'))
+                <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</p>
+            @endif
+        
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+        </div>
         <div class="row">
             <div class="col-lg-12 col-md-12">
 
@@ -21,7 +36,14 @@
 
                         <h2 class="card-title mb-1">2021 Application for Index Numbers</h2>
                         <button class="btn btn-primary btn-icon m-1" type="button"><span class="ul-btn__text">DOWNLOAD LIST OF STUDENTS (EXCEL)</span></button>
+                        
+                         <form name="pending_st_form" action="{{url('approve-students')}}" method="post">
+                         
+                         @csrf
                         <div class="table-responsive">
+                        
+                       
+                        
                             <table class="display table table-striped table-bordered" id="multicolumn_ordering_table" style="width:100%">
                                 <thead>
                                 <tr>
@@ -43,10 +65,16 @@
 
                                 <tr>
                                     <td><label class="checkbox checkbox-success">
-                                            <input type="checkbox"  /><span class="checkmark"></span>
+                                    
+                                    @if($student['status']=='0')
+                                    
+                                            <input type="checkbox" name="student_ids[]" value="{{$student['id']}}"  /><span class="checkmark"></span>
+                                    @endif     
+                                            <input type="hidden" name="index_id" value="{{$student['index_id']}}">
+                                            <input type="hidden" name="school_id" value="{{$student['school_id']}}">
                                         </label></td>
                                     <td>{{$i}}</td>
-                                    <td>{{ SchoolController::fetchFeilds('schools','school_name',$student['id']); }}</td>
+                                    <td>{{ SchoolController::fetchFeilds('schools','school_name',$student['school_id']); }}</td>
                                     <td>{{$student['first_name']}} {{$student['middle_name']}} {{$student['last_name']}}</td>
                                     <td>{{$student['gender']}}</td>
 
@@ -82,13 +110,15 @@
                             </table>
 
                             <div class="col-lg-12 col-md-12">
+				
 
-
-                                <button class="btn btn-success btn-icon m-1" type="button"><span class="ul-btn__text">APPROVE SELECTED APPLICATIONS</span></button>
+                                <button class="btn btn-success btn-icon m-1" type="submit"><span class="ul-btn__text">APPROVE SELECTED APPLICATIONS</span></button>
 
 
                             </div>
                         </div>
+                        
+                        </form>
                     </div>
 
 

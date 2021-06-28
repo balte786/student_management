@@ -20,8 +20,8 @@
 
                 <div class="card text-left">
                     <div class="card-body">
-                        <a href="{{ url('school-index-upload') }}"><button class="btn btn-primary" type="button">APPLY FOR INDEX NUMBERS</button></a>
-                        <hr>
+                       
+                      
                         <h4 class="card-title mb-3">Application for Index Numbers</h4>
 
                         @if(Session::has('message'))
