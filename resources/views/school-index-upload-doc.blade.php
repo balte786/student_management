@@ -57,6 +57,7 @@
                                                         <label class="custom-file-label" for="inputGroupFile02" aria-describedby="inputGroupFileAddon02">Choose file</label>
                                                         <input type="hidden" value="{{$student['id']}}" name="student_id">
                                                         <input type="hidden" value="{{$student['index_id']}}" name="index_id">
+                                                        <input type="hidden" value="{{$student['school_id']}}" name="school_id">
                                                     </div>
 
                                                     <div class="input-group-append"><button onclick="return uploadStudentFiles({{$student['id']}},{{$i}})" class="input-group-text" name="upload_btn_{{$i}}" id="upload_btn_{{$i}}">Upload</button></div>

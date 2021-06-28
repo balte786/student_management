@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\IndexManagement;
+use App\Models\School;
 use Auth;
 use App\Imports\IndexImport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -114,6 +115,7 @@ class IndexManagementController extends Controller
         $data = array();
         $index_id      =    $request->index_id;
         $student_id      =    $request->student_id;
+        $school_id      =    $request->school_id;
         $validator = Validator::make($request->all(), [
             'student_doc' => 'required|mimes:png,jpg,jpeg,pdf,doc,docx|max:2048'
         ]);
@@ -132,7 +134,12 @@ class IndexManagementController extends Controller
                 // File extension
                 $extension = $file->getClientOriginalExtension();
 
-                $location = 'student_files';
+                $schoolCode    = School::fetchFeildsGeric('schools','school_code','id',$school_id);
+                $year    = School::fetchFeildsGeric('index_managements','year','id',$index_id);
+
+                $location = 'student_files/'.$schoolCode.'/'.$year.'/'.$student_id;
+
+              //  echo "lockkkkk".$location; exit;
 
                 // Upload file
                 if($file->move($location,$filename)){

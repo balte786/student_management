@@ -12,7 +12,7 @@ class SchoolController extends Controller
 
         $school_id = $_REQUEST['id'];
 
-        $all_schols	=	School::where('category_id','=',$school_id)->get();
+        $all_schols	=	School::where('category_id','=',$school_id)->where('id','!=','1')->get();
 
         $html ='';
 
@@ -29,7 +29,7 @@ class SchoolController extends Controller
 
     public function schools(){
 
-        $data['schools']  =   School::orderBy('id','DESC')->get();
+        $data['schools']  =   School::where('id','!=','1')->orderBy('id','DESC')->get();
         return view('schools', $data);
     }
 
@@ -130,6 +130,14 @@ class SchoolController extends Controller
 
         $category = DB::table('student_files')->where('student_id',$id)->first();
         return @$category->file_name;
+    }
+
+    static function fetchFeildsGeric($table,$fetch_field,$where_feild,$id){
+
+        //echo "in control"; exit;
+
+        $category = DB::table($table)->where($where_feild,$id)->first();
+        return @$category->$fetch_field;
     }
 
 }
