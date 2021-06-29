@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="{{ asset('dist-assets/css/plugins/datatables.min.css') }}" />
     <div class="main-content">
         <div class="breadcrumb">
-            <h1 class="mr-2">{{ SchoolController::fetchFeilds('school_categories','category_name',Auth::user()->category_id); }}, Minna, Niger State</h1>
+            <h1 class="mr-2">{{ Auth::user()->school->school_name }}</h1>
             <ul>
                 <li><a href="">Application for Index Numbers</a></li>
             </ul>
