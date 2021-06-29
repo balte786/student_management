@@ -138,7 +138,7 @@ class AdminSeeder extends Seeder
 
         $this->command->info('States table seeded!');
 
-        /*DB::table('school_categories')->insert([
+        DB::table('school_categories')->insert([
             [
                 'category_name' => 'University',
                 'category_title' => 'University'
@@ -213,7 +213,7 @@ class AdminSeeder extends Seeder
             'approved_at' => now(),
         ]);
 
-        $this->command->info('Users table seeded!');*/
+        $this->command->info('Users table seeded!');
 
 
     }
