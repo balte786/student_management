@@ -20,8 +20,8 @@
                         <div class="row">
                             <div class="col-lg-12 col-md-12">
                                 <p>Download the Quota Template and complete accordingly</p>
-                                <button class="btn btn-primary btn-icon m-1" type="button"><span class="ul-btn__icon"><i class="i-File-Excel"></i></span><span class="ul-btn__text">DOWNLOAD UNIVERSIY QUOTA TEMPLATE</span></button>
-                                <button class="btn btn-primary btn-icon m-1" type="button"><span class="ul-btn__icon"><i class="i-File-Excel"></i></span><span class="ul-btn__text">DOWNLOAD SCHOOL OF HEALTH TECHNOLOGY QUOTA TEMPLATE</span></button>
+                                <a href="{{ asset('general_formates/quota.xlsx') }}" class="btn btn-primary btn-icon m-1" type="button"><span class="ul-btn__icon"><i class="i-File-Excel"></i></span><span class="ul-btn__text">DOWNLOAD UNIVERSIY QUOTA TEMPLATE</span></a>
+                                <a href="{{ asset('general_formates/students.xlsx') }}" class="btn btn-primary btn-icon m-1" type="button"><span class="ul-btn__icon"><i class="i-File-Excel"></i></span><span class="ul-btn__text">DOWNLOAD SCHOOL OF HEALTH TECHNOLOGY QUOTA TEMPLATE</span></a>
 
                             </div>
                             <div class="col-lg-12 col-md-12">

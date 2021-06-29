@@ -58,7 +58,6 @@ class IndexImport implements ToCollection, WithHeadingRow
             $student->address_of_nok        =   $row['addredd_of_nok'];
              $student->name_of_parent        =   $row['name_of_parent'];
             $student->address_of_parent        =   $row['address_of_parent'];
-            $student->name_of_university        =   $row['name_of_university'];
             $student->date_admitted        =  Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['date_admitted']));
             $student->admission_number        =   $row['admission_number'];
             $student->qualification_one        =   $row['qualification_1'];

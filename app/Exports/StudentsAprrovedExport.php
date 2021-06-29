@@ -8,7 +8,7 @@ use DB;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class StudentsExport implements FromCollection, WithHeadings
+class StudentsAprrovedExport implements FromCollection, WithHeadings
 {
     /**
     * @return \Illuminate\Support\Collection
@@ -47,7 +47,7 @@ class StudentsExport implements FromCollection, WithHeadings
             DB::raw('DATE_FORMAT(qualification_four_date, "%d/%m/%Y") as qualification_four_date'),
         'qualification_five',
             DB::raw('DATE_FORMAT(qualification_five_date, "%d/%m/%Y") as qualification_five_date')
-        )->where('index_id',$this->index_id)->get();
+        )->where(['index_id'=>$this->index_id,'status'=>'1'])->get();
     }
     public function headings(): array
     {

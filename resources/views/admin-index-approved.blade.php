@@ -4,7 +4,7 @@
     <?php   use \App\Http\Controllers\SchoolController; ?>
     <div class="main-content">
         <div class="breadcrumb">
-            <h1 class="mr-2">{{Auth::user()->school->school_name}}</h1>
+            <h1 class="mr-2">{{$school_name}}</h1>
             <ul>
                 <li><a href="">Approved Index Numbers</a></li>
             </ul>
@@ -54,7 +54,7 @@
                                     <td>{{$student['index_number']}}</td>
                                     <td>{{$student['first_name']}} {{$student['middle_name']}} {{$student['last_name']}}</td>
                                     <td>{{$student['gender']}}</td>
-                                    <td>{{$student['date_of_birth']}}</td>
+                                    <td>{{date('d-m-Y',strtotime($student['date_of_birth']))}}</td>
                                     <td>{{$student['state_of_origin']}}</td>
                                     <td><span class="badge {{ $badge }}">{{ $status }}</span></td>
                                     <td>
@@ -89,7 +89,7 @@
                             </table>
                             <div class="col-lg-12 col-md-12">
 
-                                <a href="{{ url('/approved-export-index',[$index_id])}}"><button class="btn btn-primary btn-icon m-1" type="button"><span class="ul-btn__text">DOWNLOAD APPROVED INDEX NUMBERS (EXCEL)</span></button></a>
+                                <button class="btn btn-primary btn-icon m-1" type="button"><span class="ul-btn__text">DOWNLOAD APPROVED INDEX NUMBERS (EXCEL)</span></button>
                             </div>
                         </div>
                     </div>

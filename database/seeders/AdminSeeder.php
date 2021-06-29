@@ -16,30 +16,129 @@ class AdminSeeder extends Seeder
     {
         DB::table('states')->insert([
             [
-                'state_name' => 'Kaduna',
-                'state_code' => 'Kad'
+                'state_name' => 'Abia',
+                'state_code' => 'AB'
             ],
             [
+                'state_name' => 'Adamawa',
+                'state_code' => 'AD'
+            ],
+            [
+                'state_name' => 'Akwa Ibom',
+                'state_code' => 'AK'
+            ],
+            [
+                'state_name' => 'Anambra',
+                'state_code' => 'AN'
+            ],
+            [
+                'state_name' => 'Bauchi',
+                'state_code' => 'BA'
+            ],
+            [
+                'state_name' => 'Bayelsa',
+                'state_code' => 'BY'
+            ],
+            [
+                'state_name' => 'Benue',
+                'state_code' => 'BE'
+            ],[
+                'state_name' => 'Borno',
+                'state_code' => 'BO'
+            ],[
+                'state_name' => 'Cross River',
+                'state_code' => 'CR'
+            ],[
+                'state_name' => 'Delta',
+                'state_code' => 'DE'
+            ],[
+                'state_name' => 'Ebonyi',
+                'state_code' => 'EB'
+            ],[
+                'state_name' => 'Edo',
+                'state_code' => 'ED'
+            ],[
+                'state_name' => 'Ekiti',
+                'state_code' => 'EK'
+            ],[
+                'state_name' => 'Enugu',
+                'state_code' => 'EN'
+            ],[
+                'state_name' => 'Gombe',
+                'state_code' => 'GO'
+            ],[
+                'state_name' => 'Imo',
+                'state_code' => 'IM'
+            ],[
+                'state_name' => 'Jigawa',
+                'state_code' => 'JI'
+            ],[
+                'state_name' => 'Kaduna',
+                'state_code' => 'KD'
+            ],[
+                'state_name' => 'Kano',
+                'state_code' => 'KN'
+            ],[
+                'state_name' => 'Katsina',
+                'state_code' => 'KT'
+            ],[
+                'state_name' => 'Kebbi',
+                'state_code' => 'KE'
+            ],[
+                'state_name' => 'Kogi',
+                'state_code' => 'KO'
+            ],[
+                'state_name' => 'Kwara',
+                'state_code' => 'KW'
+            ],[
+                'state_name' => 'Lagos',
+                'state_code' => 'LA'
+            ],[
+                'state_name' => 'Nasarawa',
+                'state_code' => 'NA'
+            ],[
+                'state_name' => 'Niger',
+                'state_code' => 'NI'
+            ],[
+                'state_name' => 'Ogun',
+                'state_code' => 'OG'
+            ],[
+                'state_name' => 'Ondo',
+                'state_code' => 'ON'
+            ],[
                 'state_name' => 'Osun',
                 'state_code' => 'OS'
-            ],
-            [
-                'state_name' => 'Edo',
-                'state_code' => 'EDO'
-            ],
-            [
-                'state_name' => 'Lagos',
-                'state_code' => 'LAG'
-            ],
-            [
-                'state_name' => 'Enugu',
-                'state_code' => 'ENU'
+            ],[
+                'state_name' => 'Oyo',
+                'state_code' => 'OY'
+            ],[
+                'state_name' => 'Plateau',
+                'state_code' => 'PL'
+            ],[
+                'state_name' => 'Rivers',
+                'state_code' => 'RI'
+            ],[
+                'state_name' => 'Sokoto',
+                'state_code' => 'SO'
+            ],[
+                'state_name' => 'Taraba',
+                'state_code' => 'TA'
+            ],[
+                'state_name' => 'Yobe',
+                'state_code' => 'YO'
+            ],[
+                'state_name' => 'Zamfara',
+                'state_code' => 'ZA'
+            ],[
+                'state_name' => 'Federal Capital Territory',
+                'state_code' => 'FCT'
             ]
+
         ]);
 
         $this->command->info('States table seeded!');
 
-        DB::table('school_categories')->insert([
+        /*DB::table('school_categories')->insert([
             [
                 'category_name' => 'University',
                 'category_title' => 'University'
@@ -114,7 +213,7 @@ class AdminSeeder extends Seeder
             'approved_at' => now(),
         ]);
 
-        $this->command->info('Users table seeded!');
+        $this->command->info('Users table seeded!');*/
 
 
     }

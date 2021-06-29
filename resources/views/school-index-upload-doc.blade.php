@@ -78,7 +78,7 @@
                             </table>
                             <div class="col-lg-12 col-md-12">
 
-                                <a href="{{url('school-index-submission')}}" class="btn btn-primary btn-icon m-1" type="button"><span class="ul-btn__text">SUBMIT INDEXING APPLICATION</span></a>
+                                <a href="{{url('school-index-submission',[$index_id])}}" class="btn btn-primary btn-icon m-1" type="button"><span class="ul-btn__text">SUBMIT INDEXING APPLICATION</span></a>
                             </div>
                         </div>
                     </div>

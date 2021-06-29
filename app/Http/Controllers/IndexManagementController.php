@@ -7,6 +7,7 @@ use App\Models\IndexManagement;
 use App\Models\School;
 use Auth;
 use App\Mail\MailIndexNumberUploaded;
+use App\Imports\CountIndexMangamentImport;
 use App\Imports\IndexImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\SchoolQuota;
@@ -46,6 +47,7 @@ class IndexManagementController extends Controller
         $data['page'] = 'Admin Quota Management';
         return view('school-index-upload', $data);
     }
+
     public function school_index_import(Request $request){
         $this->validate($request, [
             'year' => 'required',
@@ -57,30 +59,36 @@ class IndexManagementController extends Controller
         if($quotas){
             $quota_id = $quotas->id;
             $quota = $quotas->quota;
-            $index_record   =   IndexManagement::where(array('school_id'=>$school_id,'year'=>$request->year))->get();
-            if($index_record->count()==0){
 
-                $index_mang = new IndexManagement;
-                $index_mang->school_id = $school_id;
-                $index_mang->quota_id  = $quota_id;
-                $index_mang->year = $request->year;
-                $index_mang->status ='0';
+            $array = (new CountIndexMangamentImport)->toArray(request()->file('file'));
+            $count_row	=	count($array[0])-1;
+            if($count_row>$quota){
+                $request->session()->flash('message', 'Your inserted record has been greater than your quota. Please upload max '.$quota.' numbers of records');
+                return redirect('school-index-upload');
+            }else{
+                $index_record   =   IndexManagement::where(array('school_id'=>$school_id,'year'=>$request->year))->get();
+                if($index_record->count()==0){
 
-                if($index_mang->save()){
-                    $index_id   =   $index_mang->id;
-                    Excel::import(new IndexImport($request->year,$school_id,$quota_id,$index_id),request()->file('file'));
-                    $request->session()->flash('message', 'Successfully uploaded the index');
-                    return redirect('school-index-upload-doc/'.$index_id);
+                    $index_mang = new IndexManagement;
+                    $index_mang->school_id = $school_id;
+                    $index_mang->quota_id  = $quota_id;
+                    $index_mang->year = $request->year;
+                    $index_mang->status ='0';
+
+                    if($index_mang->save()){
+                        $index_id   =   $index_mang->id;
+                        Excel::import(new IndexImport($request->year,$school_id,$quota_id,$index_id),request()->file('file'));
+                        $request->session()->flash('message', 'Successfully uploaded the index');
+                        return redirect('school-index-upload-doc/'.$index_id);
+                    }else{
+                        $request->session()->flash('message', 'Something happened wrong try later');
+                        return redirect('school-index-upload');
+                    }
                 }else{
-                    $request->session()->flash('message', 'Something happened wrong try later');
+                    $request->session()->flash('message', 'You have already uploaded quota against this year');
                     return redirect('school-index-upload');
                 }
-            }else{
-                $request->session()->flash('message', 'You have already uploaded quota against this year');
-                return redirect('school-index-upload');
             }
-
-
 
 
         }else{
@@ -94,6 +102,8 @@ class IndexManagementController extends Controller
     public function school_index_approved($id){
 
         $data['pages']     =   "Approved";
+        $data['index_id']   =   $id;
+        $data['index_year']      =   IndexManagement::where(array('id'=>$id))->first()->year;
         $data['approved_students']      =   Student::where(array('index_id'=>$id))->get();
         return view('school-index-approved', $data);
 
@@ -103,7 +113,7 @@ class IndexManagementController extends Controller
 
         $data['pages']     =   "Student Docs";
         $data['students_list']    =    Student::where(array('index_id'=>$id))->get();
-
+        $data['index_id']     =   $id;
         $std_list =   IndexManagement::where(array('id'=>$id))->first();
 
         //print_r($std_list);exit;
@@ -184,22 +194,32 @@ class IndexManagementController extends Controller
 
     }
 
-    public function school_index_submission(request $request){
+    public function school_index_submission(request $request,$id){
 
-        $first_name     =   Auth::user()->first_name;
-        $email     =   Auth::user()->email;
 
-        $site_url   =   url('/');
-        $email_data = array(
-            'first_name'=>$first_name,
-            'site_url'=>$site_url
-        );
-        try{
-            Mail::to($email)->send(new MailIndexNumberUploaded($email_data));
+
+        $indexUpdate       = IndexManagement::find($id);
+
+       $indexUpdate->uploading_status      =    '1';
+
+        if($indexUpdate->save()){
+
+            $first_name     =   Auth::user()->first_name;
+            $email     =   Auth::user()->email;
+
+            $site_url   =   url('/');
+            $email_data = array(
+                'first_name'=>$first_name,
+                'site_url'=>$site_url
+            );
+            try{
+                Mail::to($email)->send(new MailIndexNumberUploaded($email_data));
+            }
+            catch(\Exception $e){
+
+            }
         }
-        catch(\Exception $e){
 
-        }
 
         $request->session()->flash('message', 'Successfully uploaded the index');
         return redirect('school-index-list');
