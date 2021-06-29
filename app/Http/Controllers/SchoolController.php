@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\StudentsAprrovedExport;
+use App\Models\IndexManagement;
 use Illuminate\Http\Request;
 use DB;
 use App\Models\School;
@@ -138,6 +141,16 @@ class SchoolController extends Controller
 
         $category = DB::table($table)->where($where_feild,$id)->first();
         return @$category->$fetch_field;
+    }
+
+    public function approved_export_index($index_id){
+
+        $index_rec  =   IndexManagement::where('id',$index_id)->first();
+        $schools    =   School::where('id',$index_rec->school_id)->first();
+        $file_name  =   $schools->school_code.'_'.$index_rec->year;
+
+        return Excel::download(new StudentsAprrovedExport($index_id), $file_name.'.xlsx');
+
     }
 
 }

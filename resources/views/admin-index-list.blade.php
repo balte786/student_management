@@ -45,14 +45,14 @@
                                 <tbody>
                                 @foreach($index_lists as $list)
                                 <tr>
-                                    <td>{{ date('d/M/Y', strtotime($list->created_at)) }}</td>
+                                    <td>{{ date('d-m-Y', strtotime($list->created_at)) }}</td>
                                     <td>{{ $list->year }}</td>
                                     <td>{{ $list->school_name }}</td>
                                     <td>{{ $list->quota }}</td>
                                     <td>{{ IndexManagementController::countApplicants($list->id) }}</td>
                                     @if($list->status==1)
                                         <td><span class="badge badge-success">APPROVED</span></td>
-                                        <td><a href="{{ url('school-index-approved',[$list->id])}}"><button class="btn btn-success" type="button"><i class="nav-icon i-Folder-Download"></i></button></a></td>
+                                        <td><a href="{{ url('/admin/index-approved',[$list->id])}}"><button class="btn btn-success" type="button"><i class="nav-icon i-Folder-Download"></i></button></a></td>
                                     @else
                                         <td><span class="badge badge-warning">PENDING</span></td>
                                         <td><a href="{{ url('admin-index-pending',[$list->id])}}"><button class="btn btn-warning" type="button"><i class="nav-icon i-Folder-Download"></i></button></a></td>

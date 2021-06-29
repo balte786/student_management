@@ -21,6 +21,8 @@ class CreateIndexManagementsTable extends Migration
             $table->enum('status', [0,1,2]);
             $table->timestamps();
 
+
+
             $table->foreign('school_id')
                 ->references('id')
                 ->on('schools')

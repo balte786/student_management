@@ -45,7 +45,7 @@
                                     <?php
                                     $status =   'Active';
                                     $badge  =   'badge-success';
-                                    if($user->approved_at==''){
+                                    if($user->status=='0'){
                                         $status =   'Disable';
                                         $badge  =   'badge-warning';
                                     }

@@ -37,7 +37,6 @@ class CreateStudentsTable extends Migration
             $table->string('address_of_nok')->nullable();
             $table->string('name_of_parent')->nullable();
             $table->longText('address_of_parent')->nullable();
-            $table->string('name_of_university')->nullable();
             $table->date('date_admitted')->nullable();
             $table->string('admission_number')->nullable();
             $table->string('qualification_one')->nullable();

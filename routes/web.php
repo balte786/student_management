@@ -41,7 +41,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/school-index-approved/{id}', [App\Http\Controllers\IndexManagementController::class, 'school_index_approved']);
         Route::get('/school-index-upload-doc/{id}', [App\Http\Controllers\IndexManagementController::class, 'school_index_upload_doc']);
         Route::post('/upload-students-docs-ajax', [App\Http\Controllers\IndexManagementController::class, 'upload_student_docs_ajax']);
-        Route::get('/school-index-submission', [App\Http\Controllers\IndexManagementController::class, 'school_index_submission']);
+        Route::get('/school-index-submission/{id}', [App\Http\Controllers\IndexManagementController::class, 'school_index_submission']);
+        Route::get('/approved-export-index/{id}', [App\Http\Controllers\SchoolController::class, 'approved_export_index']);
 
 
     });
@@ -74,6 +75,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('admin/export-index/{id}', [App\Http\Controllers\AdminController::class, 'export_index']);
         Route::get('/admin-index-pending/{id}', [App\Http\Controllers\AdminController::class, 'admin_index_pending']);
 		Route::post('/approve-students', [App\Http\Controllers\AdminController::class, 'approve_students']);
+        Route::get('/admin/index-approved/{id}', [App\Http\Controllers\AdminController::class, 'admin_index_approved']);
+
 		
 
     });

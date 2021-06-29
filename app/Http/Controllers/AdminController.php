@@ -167,7 +167,7 @@ class AdminController extends Controller
         $data['user_id'] = $user_id;
         $data['school_types']  =  SchoolCategory::all();
         $data['user']  = User::where('id',$user_id)->first();
-        return view('editAdminUser', $data);
+        return view('admin-user-view', $data);
 
     }
 
@@ -344,6 +344,7 @@ class AdminController extends Controller
         $data['index_lists']    = IndexManagement::select('index_managements.id','index_managements.status','index_managements.created_at', 'schools.school_name','school_quotas.year','school_quotas.quota')
             ->join('schools','index_managements.school_id', '=', 'schools.id')
             ->join('school_quotas','index_managements.quota_id', '=', 'school_quotas.id')
+            ->where('index_managements.status','1')
              ->orderby('index_managements.year','desc')
             ->get();
 
@@ -427,6 +428,17 @@ class AdminController extends Controller
         $file_name  =   $schools->school_code.'_'.$index_rec->year;
 
         return Excel::download(new StudentsExport($index_id), $file_name.'.xlsx');
+
+    }
+
+    public function admin_index_approved($id){
+
+        $data['pages']     =   "Approved";
+        $index_rec     =   IndexManagement::where(array('id'=>$id))->first();
+        $data['index_year']= $index_rec->year;
+        $data['school_name']= School::where('id',$index_rec->school_id)->first()->school_name;
+        $data['approved_students']      =   Student::where(array('index_id'=>$id))->get();
+        return view('admin-index-approved', $data);
 
     }
 }
