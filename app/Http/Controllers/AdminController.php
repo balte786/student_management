@@ -344,7 +344,7 @@ class AdminController extends Controller
         $data['index_lists']    = IndexManagement::select('index_managements.id','index_managements.status','index_managements.created_at', 'schools.school_name','school_quotas.year','school_quotas.quota')
             ->join('schools','index_managements.school_id', '=', 'schools.id')
             ->join('school_quotas','index_managements.quota_id', '=', 'school_quotas.id')
-            ->where('index_managements.status','1')
+            ->where('index_managements.uploading_status','1')
              ->orderby('index_managements.year','desc')
             ->get();
 
