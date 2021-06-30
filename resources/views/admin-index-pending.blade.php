@@ -56,6 +56,7 @@
                                     <th>State</th>-->
 
                                     <th>Documents</th>
+                                    <th>Student Picture</th>
 
                                 </tr>
                                 </thead>
@@ -80,7 +81,11 @@
 
                                     <td>
 
-                                        <?php $filename = SchoolController::fetchFeildsFiles($student['id']);
+                                        <?php
+
+                                        $filename = SchoolController::fetchFeildsFiles($student['id']);
+
+                                        $picturename = SchoolController::fetchFeildsPic($student['id']);
 
                                         $schoolCode    = SchoolController::fetchFeildsGeric('schools','school_code','id',$student['school_id']);
                                         $year    = SchoolController::fetchFeildsGeric('index_managements','year','id',$student['index_id']);
@@ -98,6 +103,22 @@
 
                                                 <button  class="btn btn-primary btn-icon m-1" type="button"><span class="ul-btn__text">DOCUMENTS NOT FOUND</span></button>
                                         @endif
+
+
+
+                                    </td>
+                                    <td>
+
+                                        @if($picturename)
+
+
+                                            <a target="_blank" href="{{ asset('student_files/'.$schoolCode.'/'.$year.'/'.$student['id'].'/'.$picturename.'') }}"> <img src="{{ asset('student_files/'.$schoolCode.'/'.$year.'/'.$student['id'].'/'.$picturename.'') }}" width="80" height="80"></a>
+
+                                        @else
+
+                                            <p>N/A</p>
+                                        @endif
+
 
                                     </td>
 

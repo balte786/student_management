@@ -1,6 +1,7 @@
 @extends('layouts.main')
 
 @section('content')
+    <link rel="stylesheet" href="{{ asset('dist-assets/css/plugins/datatables.min.css') }}" />
     <?php   use \App\Http\Controllers\SchoolController; ?>
     <div class="main-content">
         <div class="breadcrumb">
@@ -30,8 +31,9 @@
                                     <th>Gender</th>
                                     <th>DOB</th>
                                     <th>State</th>
-                                    <th>Status</th>
+
                                     <th>Documents</th>
+                                    <th>Student Picture</th>
 
                                 </tr>
                                 </thead>
@@ -56,13 +58,15 @@
                                     <td>{{$student['gender']}}</td>
                                     <td>{{date('d-m-Y',strtotime($student['date_of_birth']))}}</td>
                                     <td>{{$student['state_of_origin']}}</td>
-                                    <td><span class="badge {{ $badge }}">{{ $status }}</span></td>
+
                                     <td>
 
                                         <?php
 
                                             //echo "i am student=".$student['id'];
-                                            $filename = SchoolController::fetchFeildsFiles($student['id']);
+                                            $filename = SchoolController::fetchFeildsFiles2($student['id']);
+                                            $imagename = SchoolController::fetchFeildsPic2($student['id']);
+
 
                                         $schoolCode    = SchoolController::fetchFeildsGeric('schools','school_code','id',$student['school_id']);
                                         $year    = SchoolController::fetchFeildsGeric('index_managements','year','id',$student['index_id']);
@@ -77,6 +81,19 @@
                                             <button class="btn btn-primary btn-icon m-1" type="button"><span class="ul-btn__text">DOWNLOAD NOT FOUND</span></button>
 
                                         @endif
+
+                                    </td>
+                                    <td>
+
+                                        @if($imagename)
+
+                                            <a target="_blank" href="{{ asset('student_files/'.$schoolCode.'/'.$year.'/'.$student['id'].'/'.$imagename.'') }}"> <img src="{{ asset('student_files/'.$schoolCode.'/'.$year.'/'.$student['id'].'/'.$imagename.'') }}" width="80" height="80"></a>
+
+                                        @else
+
+                                            <p>N/A</p>
+                                        @endif
+
 
                                     </td>
 

@@ -129,11 +129,38 @@ class SchoolController extends Controller
 
     static function fetchFeildsFiles($id){
 
+    //echo "in control"; exit;
+
+    $category = DB::table('hold_student_files')->where('student_id',$id)->first();
+    return @$category->file_name;
+}
+
+    static function fetchFeildsPic($id){
+
+        //echo "in control"; exit;
+
+        $category = DB::table('hold_student_pictures')->where('student_id',$id)->first();
+        return @$category->file_name;
+    }
+
+
+    static function fetchFeildsFiles2($id){
+
         //echo "in control"; exit;
 
         $category = DB::table('student_files')->where('student_id',$id)->first();
         return @$category->file_name;
     }
+
+    static function fetchFeildsPic2($id){
+
+        //echo "in control"; exit;
+
+        $category = DB::table('student_pictures')->where('student_id',$id)->first();
+        return @$category->file_name;
+    }
+
+
 
     static function fetchFeildsGeric($table,$fetch_field,$where_feild,$id){
 

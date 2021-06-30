@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Models\Student;
+use App\Models\HoldStudents;
 use Auth;
 use App\Models\School;
 use App\Models\SchoolQuota;
@@ -33,14 +34,14 @@ class IndexImport implements ToCollection, WithHeadingRow
 //echo "<pre>";
             //print_r($row); exit;
 
-            $index_number   ='PCN/'.Auth::user()->school->school_code.'/'.substr($this->year, -2).'/'.sprintf("%04d", $i);
+           // $index_number   ='PCN/'.Auth::user()->school->school_code.'/'.substr($this->year, -2).'/'.sprintf("%04d", $i);
+           // $student->index_number        =   $index_number;
 
-
-            $student = new Student;
+            $student = new HoldStudents;
             $student->school_id         =   $this->school_id;
             $student->quota_id        =   $this->quota_id;
             $student->index_id        =   $this->index_id;
-            $student->index_number        =   $index_number;
+
             $student->first_name        =   $row['firstname'];
             $student->middle_name        =   $row['middlename'];
             $student->last_name        =   $row['lastname'];
