@@ -43,6 +43,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/upload-students-docs-ajax', [App\Http\Controllers\IndexManagementController::class, 'upload_student_docs_ajax']);
         Route::get('/school-index-submission/{id}', [App\Http\Controllers\IndexManagementController::class, 'school_index_submission']);
         Route::get('/approved-export-index/{id}', [App\Http\Controllers\SchoolController::class, 'approved_export_index']);
+        Route::post('/upload-picture-ajax', [App\Http\Controllers\IndexManagementController::class, 'upload_picture_ajax']);
 
 
     });

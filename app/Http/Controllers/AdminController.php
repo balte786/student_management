@@ -10,6 +10,7 @@ use Mail;
 use App\Models\User;
 use App\Models\SchoolCategory;
 use App\Models\Student;
+use App\Models\HoldStudents;
 use App\Models\IndexManagement;
 use App\Mail\MailAdminPassword;
 use App\Mail\MailIndexApproved;
@@ -18,7 +19,9 @@ use App\Models\SchoolQuota;
 use App\Imports\QuotaImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Hash;
-
+use Carbon\Carbon;
+use Storage;
+use File;
 use DB;
 
 class AdminController extends Controller
@@ -357,7 +360,7 @@ class AdminController extends Controller
         $data['title'] = 'Admin index list';
         $data['page'] = 'Admin index list';
         $data['index_id']   =   $index_id;
-        $data['student_lists']    = Student::where('index_id',$index_id)->get();
+        $data['student_lists']    = HoldStudents::where('index_id',$index_id)->get();
 
 
         return view('admin-index-pending', $data);
@@ -375,16 +378,113 @@ class AdminController extends Controller
 	
 	$index_id	=	$request->index_id;
 	$student_ids	=	array();
-	
+    $indexData       =    IndexManagement::where('id',$index_id)->first();
+    $year       =   $indexData->year;
+    $schoolCode     =   School::where('id',$indexData->school_id)->first()->school_code;
 	$student_ids	=	$request->student_ids;
-	
+	$counter    =   1;
 	for($i=0;$i<count($student_ids); $i++){
 		
-		$values = array('status' => '1');
-         DB::table('students')->where('id',$student_ids[$i])->update($values);
-		 
-		
-		}
+		//$values = array('status' => '1');
+         //DB::table('students')->where('id',$student_ids[$i])->update($values);
+
+
+        $hold_students   =    DB::table('hold_students')->where('id',$student_ids[$i])->first();
+
+        $index_number   ='PCN/'.Auth::user()->school->school_code.'/'.substr($year, -2).'/'.sprintf("%04d", $counter);
+
+        $student = new Student;
+        $student->school_id         =   $hold_students->school_id;
+        $student->quota_id        =   $hold_students->quota_id;
+        $student->index_id        =   $hold_students->index_id;
+        $student->status        =   1;
+        $student->index_number        =   $index_number;
+        $student->first_name        =   $hold_students->first_name;
+        $student->middle_name        =   $hold_students->middle_name;
+        $student->last_name        =   $hold_students->last_name;
+        $student->email        =   $hold_students->email;
+        $student->phone        =   $hold_students->phone;
+        $student->religion        =   $hold_students->religion;
+        $student->marital_status        =   $hold_students->marital_status;
+        $student->gender        =   $hold_students->gender;
+        $student->date_of_birth        =   $hold_students->date_of_birth;
+        $student->place_of_birth        =   $hold_students->place_of_birth;
+        $student->state_of_origin        =   $hold_students->state_of_origin;
+        $student->lga        =   $hold_students->lga;
+        $student->home_address        =   $hold_students->home_address;
+        $student->name_of_nok        =   $hold_students->name_of_nok;
+        $student->address_of_nok        =   $hold_students->address_of_nok;
+        $student->name_of_parent        =   $hold_students->name_of_parent;
+        $student->address_of_parent        =   $hold_students->address_of_parent;
+        $student->date_admitted        =  $hold_students->date_admitted;
+        $student->admission_number        =   $hold_students->admission_number;
+        $student->qualification_one        =   $hold_students->qualification_one;
+        $student->qualification_one_date        =   $hold_students->qualification_one_date;
+        $student->qualification_two        =   $hold_students->qualification_two;
+        $student->qualification_two_date        =   $hold_students->qualification_two_date;
+        $student->qualification_three        =   $hold_students->qualification_three;
+        $student->qualification_three_date        =   $hold_students->qualification_three_date;
+        $student->qualification_four        =   $hold_students->qualification_four;
+        $student->qualification_four_date        =   $hold_students->qualification_four_date;
+        $student->qualification_five        =   $hold_students->qualification_five;
+        $student->qualification_five_date        =   $hold_students->qualification_five_date;
+
+        if($student->save()){
+
+           $newStudentId    =    $student->id;
+
+            $hold_students_files   =    DB::table('hold_student_files')->where('student_id',$hold_students->id)->first();
+            $values = array('student_id' => $newStudentId, 'file_name'=> $hold_students_files->file_name);
+            DB::table('student_files')->insert($values);
+
+          //  $hold_students_files   =    DB::table('hold_student_files')->where('student_id',$hold_students->id)->first();
+
+            $oldStoredFile  =  'student_files/'.$schoolCode.'/'.$year.'/'.$hold_students->id.'/'.$hold_students_files->file_name;
+            $newStoredFile  =  'student_files/'.$schoolCode.'/'.$year.'/'.$newStudentId.'/'.$hold_students_files->file_name;
+
+           // echo $oldStoredFile; exit;
+
+            if(file_exists($oldStoredFile)){
+
+                //echo "in inf"; exit;
+
+                File::move(public_path($oldStoredFile), public_path($newStoredFile));
+                echo "moved"; exit;
+                unlink($oldStoredFile);
+            }
+
+
+
+
+            //--------------inserting pictures-------------------
+
+
+            $hold_students_pictures   =    DB::table('hold_student_pictures')->where('student_id',$hold_students->id)->first();
+            $values = array('student_id' => $newStudentId, 'file_name'=> $hold_students_pictures->file_name);
+            DB::table('student_pictures')->insert($values);
+
+
+
+            $oldStoredPic  =  'student_files/'.$schoolCode.'/'.$year.'/'.$hold_students->id.'/'.$hold_students_pictures->file_name;
+            $newStoredPic  =  'student_files/'.$schoolCode.'/'.$year.'/'.$newStudentId.'/'.$hold_students_pictures->file_name;
+
+            if(file_exists($oldStoredPic)){
+
+                Storage::move($oldStoredPic, $newStoredPic);
+                unlink($oldStoredPic);
+            }
+
+
+            DB::table('hold_students')->delete($hold_students->id);
+
+
+        }
+
+
+
+        $counter++;
+
+	}
 	$values2 = array('status' => '1');
 	$index	=	 IndexManagement::find($index_id);
 	$index->status = '1';

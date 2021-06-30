@@ -12,6 +12,7 @@ use App\Imports\IndexImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\SchoolQuota;
 use App\Models\Student;
+use App\Models\HoldStudents;
 use Illuminate\Support\Facades\Validator;
 use DB;
 
@@ -85,7 +86,7 @@ class IndexManagementController extends Controller
                         return redirect('school-index-upload');
                     }
                 }else{
-                    $request->session()->flash('message', 'You have already uploaded quota against this year');
+                    $request->session()->flash('message', 'Application for Index Numbers has already been submitted for this year');
                     return redirect('school-index-upload');
                 }
             }
@@ -112,13 +113,13 @@ class IndexManagementController extends Controller
     public function school_index_upload_doc($id){
 
         $data['pages']     =   "Student Docs";
-        $data['students_list']    =    Student::where(array('index_id'=>$id))->get();
+        $data['students_list']    =    HoldStudents::where(array('index_id'=>$id))->get();
         $data['index_id']     =   $id;
         $std_list =   IndexManagement::where(array('id'=>$id))->first();
 
         //print_r($std_list);exit;
 
-        $data['quota_data']            =    SchoolQuota::where('id',$std_list->quota_id)->first();
+        $data['quota_data']            =    @SchoolQuota::where('id',$std_list->quota_id)->first();
         return view('school-index-upload-doc', $data);
     }
 
@@ -143,6 +144,8 @@ class IndexManagementController extends Controller
                 $file = $request->file('student_doc');
                 $filename = $index_id.'_'.time().'_'.$file->getClientOriginalName();
 
+                $displayName = $file->getClientOriginalName();
+
                 // File extension
                 $extension = $file->getClientOriginalExtension();
 
@@ -151,24 +154,24 @@ class IndexManagementController extends Controller
 
                 $location = 'student_files/'.$schoolCode.'/'.$year.'/'.$student_id;
 
-              //  echo "lockkkkk".$location; exit;
+               //echo "lockkkkk>>".$location; exit;
 
                 // Upload file
                 if($file->move($location,$filename)){
 
-                    $checkExist    =    DB::table('student_files')->where('student_id',$student_id)->first();
+                    $checkExist    =    DB::table('hold_student_files')->where('student_id',$student_id)->first();
 
                     if($checkExist){
 
                         $values = array('student_id' => $student_id,'file_name' => $filename);
-                        DB::table('student_files')->where('student_id',$student_id)->update($values);
+                        DB::table('hold_student_files')->where('student_id',$student_id)->update($values);
 
                         $data['message'] = 'Updated Successfully!';
 
                     }else{
 
                         $values = array('student_id' => $student_id,'file_name' => $filename);
-                        DB::table('student_files')->insert($values);
+                        DB::table('hold_student_files')->insert($values);
 
                         $data['message'] = 'Uploaded Successfully!';
                     }
@@ -182,6 +185,8 @@ class IndexManagementController extends Controller
                 // Response
                 $data['success'] = 1;
 
+               // $data['filename'] = $displayName;
+
 
             }else{
                 // Response
@@ -193,6 +198,8 @@ class IndexManagementController extends Controller
         return response()->json($data);
 
     }
+
+
 
     public function school_index_submission(request $request,$id){
 
@@ -229,6 +236,84 @@ class IndexManagementController extends Controller
 
         return Student::where('index_id',$id)->count();
     }
+
+
+    public function upload_picture_ajax(request $request){
+
+        $data = array();
+        $index_id      =    $request->index_id;
+        $student_id      =    $request->student_id;
+        $school_id      =    $request->school_id;
+        $validator = Validator::make($request->all(), [
+            'student_pic' => 'required|mimes:png,jpg,jpeg|max:1048'
+        ]);
+
+        if ($validator->fails()) {
+
+            $data['success'] = 0;
+            $data['error'] = $validator->errors()->first('student_pic');// Error response
+
+        }else{
+            if($request->file('student_pic')) {
+
+                $file = $request->file('student_pic');
+                $filename = $index_id.'_'.time().'_'.$file->getClientOriginalName();
+
+                $displayName = $file->getClientOriginalName();
+
+                // File extension
+                $extension = $file->getClientOriginalExtension();
+
+                $schoolCode    = School::fetchFeildsGeric('schools','school_code','id',$school_id);
+                $year    = School::fetchFeildsGeric('index_managements','year','id',$index_id);
+
+                $location = 'student_files/'.$schoolCode.'/'.$year.'/'.$student_id;
+
+                //  echo "lockkkkk".$location; exit;
+
+                // Upload file
+                if($file->move($location,$filename)){
+
+                    $checkExist    =    DB::table('hold_student_pictures')->where('student_id',$student_id)->first();
+
+                    if($checkExist){
+
+                        $values = array('student_id' => $student_id,'file_name' => $filename);
+                        DB::table('hold_student_pictures')->where('student_id',$student_id)->update($values);
+
+                        $data['message'] = 'Updated Successfully!';
+
+                    }else{
+
+                        $values = array('student_id' => $student_id,'file_name' => $filename);
+                        DB::table('hold_student_pictures')->insert($values);
+
+                        $data['message'] = 'Picture Uploaded Successfully!';
+                    }
+
+
+                }
+
+                // File path
+                $filepath = url('student_files/'.$filename);
+
+                // Response
+                $data['success'] = 1;
+
+                // $data['filename'] = $displayName;
+
+
+            }else{
+                // Response
+                $data['success'] = 2;
+                $data['message'] = 'File not uploaded.';
+            }
+        }
+
+        return response()->json($data);
+
+    }
+
 }
 
 

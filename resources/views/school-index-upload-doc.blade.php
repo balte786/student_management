@@ -1,7 +1,9 @@
 @extends('layouts.main')
 
 @section('content')
-    <?php   use \App\Http\Controllers\SchoolController; ?>
+    <?php   use \App\Http\Controllers\SchoolController;
+
+    ?>
     <link rel="stylesheet" href="{{ asset('dist-assets/css/plugins/datatables.min.css') }}" />
     <div class="main-content">
         <div class="breadcrumb">
@@ -18,7 +20,7 @@
                 <div class="card text-left">
 
                     <div class="card-body">
-                        <h4 class="card-title mb-3">Application for Index Numbers for {{$quota_data['year']}}</h4>
+                        <h4 class="card-title mb-3">Application for Index Numbers for {{@$quota_data['year']}}</h4>
 
 
                         <div class="table-responsive">
@@ -31,6 +33,7 @@
                                     <th>DOB</th>
                                     <th>State</th>
                                     <th>Upload PDF Documents (2MB each) </th>
+                                    <th>Upload Student Picture </th>
 
                                 </tr>
                                 </thead>
@@ -63,7 +66,53 @@
                                                     <div class="input-group-append"><button onclick="return uploadStudentFiles({{$student['id']}},{{$i}})" class="input-group-text" name="upload_btn_{{$i}}" id="upload_btn_{{$i}}">Upload</button></div>
 
                                                 </div>
-                                                <p style="padding-left:17px;" id="msg_container_{{$i}}"></p>
+                                                <p style="padding-left:17px;" id="msg_container_{{$i}}">
+
+                                                <?php $filename     = SchoolController::fetchFeildsGeric('hold_student_files','file_name','student_id',$student['id']); ?>
+
+                                                 @if($filename)
+
+                                                 {{$filename}}
+
+                                                 @endif
+
+                                                </p>
+
+                                            </div>
+                                        </form>
+                                    </td>
+
+
+                                    <td>
+                                        <form name="std_pic_form_{{$i}}" id="std_pic_form_{{$i}}">
+                                            @csrf
+                                            <div class="row">
+
+                                                <div class="col-md-12 form-group mb-3 input-group">
+
+                                                    <div class="custom-file">
+
+                                                        <input class="custom-file-input" name="student_pic" id="picture_{{$i}}" type="file" />
+                                                        <label class="custom-file-label" for="inputGroupFile02" aria-describedby="inputGroupFileAddon02">Choose file</label>
+                                                        <input type="hidden" value="{{$student['id']}}" name="student_id">
+                                                        <input type="hidden" value="{{$student['index_id']}}" name="index_id">
+                                                        <input type="hidden" value="{{$student['school_id']}}" name="school_id">
+                                                    </div>
+
+                                                    <div class="input-group-append"><button onclick="return uploadStudentPicture({{$student['id']}},{{$i}})" class="input-group-text" name="upload_picture_{{$i}}" id="upload_picture_{{$i}}">Upload</button></div>
+
+                                                </div>
+                                                <p style="padding-left:17px;" id="msg_container_pic_{{$i}}">
+
+                                                    <?php $filenameimg     = SchoolController::fetchFeildsGeric('hold_student_pictures','file_name','student_id',$student['id']); ?>
+
+                                                    @if($filenameimg)
+
+                                                        {{$filenameimg}}
+
+                                                    @endif
+
+                                                </p>
 
                                             </div>
                                         </form>
@@ -133,35 +182,74 @@
         function uploadStudentFiles(studet_id,loop_id) {
 
 
-                event.preventDefault();
+            event.preventDefault();
 
-                var myform  = $('#std_doc_form_'+loop_id);
+            var myform  = $('#std_doc_form_'+loop_id);
 
-                var formData = new FormData(myform[0]);
-                $.ajax({
-                    url: '{{ url('/upload-students-docs-ajax') }}',
-                    type: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    cache: false,
-                    success: function(result)
-                    {
-                       //alert(result.success);
+            var formData = new FormData(myform[0]);
+            $.ajax({
+                url: '{{ url('/upload-students-docs-ajax') }}',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                cache: false,
+                success: function(result)
+                {
+                    //alert(result.success);
 
-                       if(result.success=='0'){
+                    if(result.success=='0'){
 
-                           $('#msg_container_'+loop_id).html('<span style="color:red;">Please Check The Doc Formate OR Select File</span>');
-                       }else if(result.success=='1'){
+                        $('#msg_container_'+loop_id).html('<span style="color:red;">Please Check The Doc Formate OR Select File</span>');
+                    }else if(result.success=='1'){
 
-                           $('#msg_container_'+loop_id).html('<span style="color:green;">'+result.message+'</span>');
-                       }
-                    },
-                    error: function(data)
-                    {
-                        console.log(data);
+                        $('#msg_container_'+loop_id).html('<span style="color:green;">'+result.message+'</span>');
                     }
-                });
+                },
+                error: function(data)
+                {
+                    console.log(data);
+                }
+            });
+
+
+
+            return false;
+        }
+
+
+        function uploadStudentPicture(studet_id,loop_id) {
+
+
+            event.preventDefault();
+
+            var myform  = $('#std_pic_form_'+loop_id);
+
+            var formData = new FormData(myform[0]);
+            $.ajax({
+                url: '{{ url('/upload-picture-ajax') }}',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                cache: false,
+                success: function(result)
+                {
+                    //alert(result.success);
+
+                    if(result.success=='0'){
+
+                        $('#msg_container_pic_'+loop_id).html('<span style="color:red;">Please Check The picture formate OR Select picture</span>');
+                    }else if(result.success=='1'){
+
+                        $('#msg_container_pic_'+loop_id).html('<span style="color:green;">'+result.message+'</span>');
+                    }
+                },
+                error: function(data)
+                {
+                    console.log(data);
+                }
+            });
 
 
 
