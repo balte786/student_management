@@ -152,7 +152,7 @@ class IndexManagementController extends Controller
                 $schoolCode    = School::fetchFeildsGeric('schools','school_code','id',$school_id);
                 $year    = School::fetchFeildsGeric('index_managements','year','id',$index_id);
 
-                $location = 'student_files/'.$schoolCode.'/'.$year.'/'.$student_id;
+                $location = 'student_upload_files/'.$schoolCode.'/'.$year.'/'.$student_id;
 
                //echo "lockkkkk>>".$location; exit;
 
@@ -180,7 +180,7 @@ class IndexManagementController extends Controller
                 }
 
                 // File path
-                $filepath = url('student_files/'.$filename);
+                $filepath = url('student_upload_files/'.$filename);
 
                 // Response
                 $data['success'] = 1;
@@ -267,7 +267,7 @@ class IndexManagementController extends Controller
                 $schoolCode    = School::fetchFeildsGeric('schools','school_code','id',$school_id);
                 $year    = School::fetchFeildsGeric('index_managements','year','id',$index_id);
 
-                $location = 'student_files/'.$schoolCode.'/'.$year.'/'.$student_id;
+                $location = 'student_upload_files/'.$schoolCode.'/'.$year.'/'.$student_id;
 
                 //  echo "lockkkkk".$location; exit;
 
@@ -295,7 +295,7 @@ class IndexManagementController extends Controller
                 }
 
                 // File path
-                $filepath = url('student_files/'.$filename);
+                $filepath = url('student_upload_files/'.$filename);
 
                 // Response
                 $data['success'] = 1;

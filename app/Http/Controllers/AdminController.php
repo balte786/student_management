@@ -375,7 +375,6 @@ class AdminController extends Controller
 
         ]);
 	
-	
 	$index_id	=	$request->index_id;
 	$student_ids	=	array();
     $indexData       =    IndexManagement::where('id',$index_id)->first();
@@ -437,20 +436,13 @@ class AdminController extends Controller
             $values = array('student_id' => $newStudentId, 'file_name'=> $hold_students_files->file_name);
             DB::table('student_files')->insert($values);
 
-          //  $hold_students_files   =    DB::table('hold_student_files')->where('student_id',$hold_students->id)->first();
+            if(file_exists(public_path('student_upload_files/'.$schoolCode.'/'.$year.'/'.$hold_students->id.'/'.$hold_students_files->file_name))){
 
-            $oldStoredFile  =  'student_files/'.$schoolCode.'/'.$year.'/'.$hold_students->id.'/'.$hold_students_files->file_name;
-            $newStoredFile  =  'student_files/'.$schoolCode.'/'.$year.'/'.$newStudentId.'/'.$hold_students_files->file_name;
+                if (! File::exists(public_path('student_approved_files/'.$schoolCode.'/'.$year.'/'.$newStudentId.''))) {
+                    File::makeDirectory(public_path('student_approved_files/'.$schoolCode.'/'.$year.'/'.$newStudentId.''), 755, true, true);
+                }
 
-           // echo $oldStoredFile; exit;
-
-            if(file_exists($oldStoredFile)){
-
-                //echo "in inf"; exit;
-
-                File::move(public_path($oldStoredFile), public_path($newStoredFile));
-                echo "moved"; exit;
-                unlink($oldStoredFile);
+                File::move($_SERVER['DOCUMENT_ROOT'].'/student_upload_files/'.$schoolCode.'/'.$year.'/'.$hold_students->id.'/'.$hold_students_files->file_name, $_SERVER['DOCUMENT_ROOT'].'/student_approved_files/'.$schoolCode.'/'.$year.'/'.$newStudentId.'/'.$hold_students_files->file_name);
             }
 
 
@@ -460,23 +452,22 @@ class AdminController extends Controller
 
 
             $hold_students_pictures   =    DB::table('hold_student_pictures')->where('student_id',$hold_students->id)->first();
-            $values = array('student_id' => $newStudentId, 'file_name'=> $hold_students_pictures->file_name);
-            DB::table('student_pictures')->insert($values);
+            if($hold_students_pictures){
+                $values = array('student_id' => $newStudentId, 'file_name'=> $hold_students_pictures->file_name);
+                DB::table('student_pictures')->insert($values);
 
+                if(file_exists(public_path('student_upload_files/'.$schoolCode.'/'.$year.'/'.$hold_students->id.'/'.$hold_students_pictures->file_name))){
 
+                    if (! File::exists(public_path('student_approved_files/'.$schoolCode.'/'.$year.'/'.$newStudentId.''))) {
+                        File::makeDirectory(public_path('student_approved_files/'.$schoolCode.'/'.$year.'/'.$newStudentId.''), 755, true, true);
+                    }
 
-            $oldStoredPic  =  'student_files/'.$schoolCode.'/'.$year.'/'.$hold_students->id.'/'.$hold_students_pictures->file_name;
-            $newStoredPic  =  'student_files/'.$schoolCode.'/'.$year.'/'.$newStudentId.'/'.$hold_students_pictures->file_name;
-
-            if(file_exists($oldStoredPic)){
-
-                Storage::move($oldStoredPic, $newStoredPic);
-                unlink($oldStoredPic);
+                    File::move($_SERVER['DOCUMENT_ROOT'].'/student_upload_files/'.$schoolCode.'/'.$year.'/'.$hold_students->id.'/'.$hold_students_pictures->file_name, $_SERVER['DOCUMENT_ROOT'].'/student_approved_files/'.$schoolCode.'/'.$year.'/'.$newStudentId.'/'.$hold_students_pictures->file_name);
+                }
             }
 
-
             DB::table('hold_students')->delete($hold_students->id);
-
+            File::deleteDirectory(public_path('student_upload_files/'.$schoolCode.'/'.$year.'/'.$hold_students->id));
 
         }
 
@@ -485,6 +476,7 @@ class AdminController extends Controller
         $counter++;
 
 	}
+
 	$values2 = array('status' => '1');
 	$index	=	 IndexManagement::find($index_id);
 	$index->status = '1';
@@ -499,18 +491,11 @@ class AdminController extends Controller
             try{ 
 			Mail::to($user_record->email)->send(new MailIndexApproved($email_data));
 			}
-            catch(\Exception $e){
-			
-				}
-	
-	
-		
+            catch(\Exception $e){}
 	}
 	//DB::table('index_managements')->where('id',$index_id)->update($values2);
 	
 	$request->session()->flash('message', 'Student has been approved Successfully!');
-	 
-	
 	 return redirect('admin-index-pending/'.$index_id);
 		
 	}
