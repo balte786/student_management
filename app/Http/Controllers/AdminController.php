@@ -455,7 +455,8 @@ class AdminController extends Controller
                     File::makeDirectory(public_path('student_approved_files/'.$schoolCode.'/'.$year.'/'.$newStudentId.''), 755, true, true);
                 }
 
-                File::move($_SERVER['DOCUMENT_ROOT'].'/student_upload_files/'.$schoolCode.'/'.$year.'/'.$hold_students->id.'/'.$hold_students_files->file_name, $_SERVER['DOCUMENT_ROOT'].'/student_approved_files/'.$schoolCode.'/'.$year.'/'.$newStudentId.'/'.$hold_students_files->file_name);
+
+                File::move(public_path('student_upload_files/'.$schoolCode.'/'.$year.'/'.$hold_students->id.'/'.$hold_students_files->file_name), public_path('student_approved_files/'.$schoolCode.'/'.$year.'/'.$newStudentId.'/'.$hold_students_files->file_name));
             }
 
             }
@@ -475,7 +476,7 @@ class AdminController extends Controller
                         File::makeDirectory(public_path('student_approved_files/'.$schoolCode.'/'.$year.'/'.$newStudentId.''), 755, true, true);
                     }
 
-                    File::move($_SERVER['DOCUMENT_ROOT'].'/student_upload_files/'.$schoolCode.'/'.$year.'/'.$hold_students->id.'/'.$hold_students_pictures->file_name, $_SERVER['DOCUMENT_ROOT'].'/student_approved_files/'.$schoolCode.'/'.$year.'/'.$newStudentId.'/'.$hold_students_pictures->file_name);
+                    File::move(public_path('student_upload_files/'.$schoolCode.'/'.$year.'/'.$hold_students->id.'/'.$hold_students_pictures->file_name), public_path('student_approved_files/'.$schoolCode.'/'.$year.'/'.$newStudentId.'/'.$hold_students_pictures->file_name));
                 }
             }
 
