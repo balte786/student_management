@@ -11,12 +11,17 @@
           </tr>
           <tr>
             <td style="font-size:16px; line-height:1.6; font-weight: 400; font-family: 'Open Sans', Roboto, Arial; color: #626262; padding-bottom: 30px;">
-              Your index number has been submit to PCN Portal. YOu'll get a notification email once its approved
+              Your application for index numbers for {{$school_name}} has been successfully submitted.
             </td>
           </tr>
           <tr>
             <td style="font-size:16px; line-height:1.6; font-weight: 400; font-family: 'Open Sans', Roboto, Arial; color: #626262; padding-bottom: 30px;">
-              Thank you <a style="font-size:18px; line-height:1.5; color:#0072c6; font-weight:400; font-family: arial; display: inline-block;" href="{{ url('/') }}">PCN Portal</a>
+              You'll get a notification email once it has been approved.
+            </td>
+          </tr>
+          <tr>
+            <td style="font-size:16px; line-height:1.6; font-weight: 400; font-family: 'Open Sans', Roboto, Arial; color: #626262; padding-bottom: 30px;">
+              Thank you
             </td>
           </tr>
          
@@ -27,7 +32,7 @@
           </tr>
           <tr>
             <td style="font-size:16px; line-height:1.6; font-weight: 400; font-family: 'Open Sans', Roboto, Arial; color: #626262;">
-             PCN Team
+              PCN Education Department
             </td>
           </tr>
         </table>

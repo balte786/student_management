@@ -46,7 +46,7 @@
                         </div>
                         <div class="col-md-6 form-group mb-3">
                             <label for="phone">Phone</label>
-                            <input class="form-control" id="phone" placeholder="Enter phone" name="phone"  value="{{$user['phone']}}"  />
+                            <input class="form-control" id="phone" placeholder="Enter phone" name="phone"  value="{{$user['phone_number']}}"  />
                         </div>
                         <div class="col-md-6 form-group mb-3">
                             <label for="credit1">Category</label>

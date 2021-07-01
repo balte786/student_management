@@ -82,7 +82,7 @@
             <table class="inner" align="center" width="500" border="0" cellpadding="0" cellspacing="0">
               <tr>
                 <td style="font-size:14px; line-height:1.6; font-weight: 400; font-family: 'Open Sans', Roboto, Arial; color: #ffffff; text-align: center;">
-                  Copyright © 2018 Medonicx.
+                  Copyright © 2021 Pharmacists Council of Nigeria (PCN)
                 </td>
               </tr>
             </table>

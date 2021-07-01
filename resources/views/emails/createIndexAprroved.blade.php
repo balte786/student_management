@@ -11,12 +11,12 @@
           </tr>
           <tr>
             <td style="font-size:16px; line-height:1.6; font-weight: 400; font-family: 'Open Sans', Roboto, Arial; color: #626262; padding-bottom: 30px;">
-              Your uploaded index file for year {{$year}} has been approved by PCN admin.
+              Your application for Index numbers for {{$school_name}} for year 2021 has been approved by PCN.
             </td>
           </tr>
           <tr>
             <td style="font-size:16px; line-height:1.6; font-weight: 400; font-family: 'Open Sans', Roboto, Arial; color: #626262; padding-bottom: 30px;">
-              Please visit by clicking <a style="font-size:18px; line-height:1.5; color:#0072c6; font-weight:400; font-family: arial; display: inline-block;" href="{{ url('/') }}">Here</a>
+              Login to your profile to download the approved list visit by clicking <a style="font-size:18px; line-height:1.5; color:#0072c6; font-weight:400; font-family: arial; display: inline-block;" href="{{ url('/') }}">Here</a>
             </td>
           </tr>
          
@@ -27,7 +27,7 @@
           </tr>
           <tr>
             <td style="font-size:16px; line-height:1.6; font-weight: 400; font-family: 'Open Sans', Roboto, Arial; color: #626262;">
-             PCN Team
+              PCN Education Department
             </td>
           </tr>
         </table>

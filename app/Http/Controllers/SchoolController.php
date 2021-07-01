@@ -135,6 +135,14 @@ class SchoolController extends Controller
     return @$category->file_name;
 }
 
+    static function fetchFeildsFilesApproved($id){
+
+        //echo "in control"; exit;
+
+        $category = DB::table('student_files')->where('student_id',$id)->first();
+        return @$category->file_name;
+    }
+
     static function fetchFeildsPic($id){
 
         //echo "in control"; exit;

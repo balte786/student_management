@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 use App\Models\Student;
+use App\Models\HoldStudents;
 use DB;
 //use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -19,7 +20,7 @@ class StudentsExport implements FromCollection, WithHeadings
     }
     public function collection()
     {
-        return Student::select('first_name',
+        return HoldStudents::select('first_name',
         'middle_name',
         'last_name',
         'email',

@@ -83,6 +83,7 @@ class AdminController extends Controller
         $user   =   User::find($id);
 
         $user->status   =   '1';
+        $user_school_name      =    School::where('id',$user->school_id)->first()->school_name;
         $user->approved_at   =   now();
 
         if($user->save()) {
@@ -90,6 +91,7 @@ class AdminController extends Controller
 			$site_url   =   url('/');
             $email_data = array(
                 'first_name'=>$user->first_name,
+                'school_name'=>$user_school_name,
                 'site_url'=>$site_url
             );
             try{ 
@@ -380,6 +382,7 @@ class AdminController extends Controller
     $indexData       =    IndexManagement::where('id',$index_id)->first();
     $year       =   $indexData->year;
     $schoolCode     =   School::where('id',$indexData->school_id)->first()->school_code;
+    $category_id     =   School::where('id',$indexData->school_id)->first()->category_id;
 	$student_ids	=	$request->student_ids;
 	$counter    =   1;
 	for($i=0;$i<count($student_ids); $i++){
@@ -390,7 +393,14 @@ class AdminController extends Controller
 
         $hold_students   =    DB::table('hold_students')->where('id',$student_ids[$i])->first();
 
-        $index_number   ='PCN/'.Auth::user()->school->school_code.'/'.substr($year, -2).'/'.sprintf("%04d", $counter);
+        if($category_id=='2') {
+
+            $index_number = 'PCN/' . $schoolCode . '/' . substr($year, -2) . '/' . sprintf("%04d", $counter);
+
+        }else if($category_id=='1'){
+
+            $index_number = $schoolCode . '/' . substr($year, -2) . '/' . sprintf("%04d", $counter);
+        }
 
         $student = new Student;
         $student->school_id         =   $hold_students->school_id;
@@ -428,13 +438,16 @@ class AdminController extends Controller
         $student->qualification_five        =   $hold_students->qualification_five;
         $student->qualification_five_date        =   $hold_students->qualification_five_date;
 
-        if($student->save()){
+        if($student->save()) {
 
-           $newStudentId    =    $student->id;
+            $newStudentId = $student->id;
 
-            $hold_students_files   =    DB::table('hold_student_files')->where('student_id',$hold_students->id)->first();
-            $values = array('student_id' => $newStudentId, 'file_name'=> $hold_students_files->file_name);
-            DB::table('student_files')->insert($values);
+            $hold_students_files = DB::table('hold_student_files')->where('student_id', $hold_students->id)->first();
+
+            if ($hold_students_files) {
+
+                $values = array('student_id' => $newStudentId, 'file_name' => $hold_students_files->file_name);
+                DB::table('student_files')->insert($values);
 
             if(file_exists(public_path('student_upload_files/'.$schoolCode.'/'.$year.'/'.$hold_students->id.'/'.$hold_students_files->file_name))){
 
@@ -445,7 +458,7 @@ class AdminController extends Controller
                 File::move($_SERVER['DOCUMENT_ROOT'].'/student_upload_files/'.$schoolCode.'/'.$year.'/'.$hold_students->id.'/'.$hold_students_files->file_name, $_SERVER['DOCUMENT_ROOT'].'/student_approved_files/'.$schoolCode.'/'.$year.'/'.$newStudentId.'/'.$hold_students_files->file_name);
             }
 
-
+            }
 
 
             //--------------inserting pictures-------------------
@@ -482,10 +495,12 @@ class AdminController extends Controller
 	$index->status = '1';
 	if($index->save()){
 		$user_record = User::where('school_id',$request->school_id)->first();
+        $user_school_name      =    School::where('id',$request->school_id)->first()->school_name;
 		$site_url   =   url('/');
             $email_data = array(
                 'first_name'=>$user_record->first_name,
 				'year'=>$index->year,
+                'school_name'=>$user_school_name,
                 'site_url'=>$site_url
             );
             try{ 

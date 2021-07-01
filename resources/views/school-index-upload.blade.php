@@ -20,8 +20,15 @@
                         <div class="row">
                             <div class="col-lg-12 col-md-12">
                                 <p>Download the Indexing Template and complete accordingly</p>
-                                <a target="_blank" href="{{ asset('general_formates/quota.xlsx') }}" class="btn btn-primary btn-icon m-1" type="button"><span class="ul-btn__icon"><i class="i-File-Excel"></i></span><span class="ul-btn__text">DOWNLOAD UNIVERSIY QUOTA TEMPLATE</span></a>
-                                <a target="" href="{{ asset('general_formates/students.xlsx') }}" class="btn btn-primary btn-icon m-1" type="button"><span class="ul-btn__icon"><i class="i-File-Excel"></i></span><span class="ul-btn__text">DOWNLOAD SCHOOL OF HEALTH TECHNOLOGY QUOTA TEMPLATE</span></a>
+
+                                @if(Auth::User()->category_id=='1')
+
+                                <a target="_blank" href="{{ asset('general_formates/students.xlsx') }}" class="btn btn-primary btn-icon m-1" type="button"><span class="ul-btn__icon"><i class="i-File-Excel"></i></span><span class="ul-btn__text">DOWNLOAD UNIVERSIY INDEX TEMPLATE</span></a>
+
+                               @else
+                                <a target="" href="{{ asset('general_formates/students.xlsx') }}" class="btn btn-primary btn-icon m-1" type="button"><span class="ul-btn__icon"><i class="i-File-Excel"></i></span><span class="ul-btn__text">DOWNLOAD SCHOOL OF HEALTH TECHNOLOGY INDEX TEMPLATE</span></a>
+
+                            @endif
 
                             </div>
                             <div class="col-lg-12 col-md-12">
