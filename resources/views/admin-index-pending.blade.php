@@ -97,7 +97,7 @@
 
                                         @if($filename)
 
-                                            <a target="_blank" href="{{ asset('student_files/'.$schoolCode.'/'.$year.'/'.$student['id'].'/'.$filename.'') }}" class="btn btn-primary btn-icon m-1" type="button"><span class="ul-btn__text">DOWNLOAD DOCUMENTS</span></a>
+                                            <a target="_blank" href="{{ asset('student_upload_files/'.$schoolCode.'/'.$year.'/'.$student['id'].'/'.$filename.'') }}" class="btn btn-primary btn-icon m-1" type="button"><span class="ul-btn__text">DOWNLOAD DOCUMENTS</span></a>
 
                                         @else
 
@@ -112,7 +112,7 @@
                                         @if($picturename)
 
 
-                                            <a target="_blank" href="{{ asset('student_files/'.$schoolCode.'/'.$year.'/'.$student['id'].'/'.$picturename.'') }}"> <img src="{{ asset('student_files/'.$schoolCode.'/'.$year.'/'.$student['id'].'/'.$picturename.'') }}" width="80" height="80"></a>
+                                            <a target="_blank" href="{{ asset('student_upload_files/'.$schoolCode.'/'.$year.'/'.$student['id'].'/'.$picturename.'') }}"> <img src="{{ asset('student_upload_files/'.$schoolCode.'/'.$year.'/'.$student['id'].'/'.$picturename.'') }}" width="80" height="80"></a>
 
                                         @else
 

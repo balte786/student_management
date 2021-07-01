@@ -11,7 +11,7 @@
           </tr>
           <tr>
             <td style="font-size:16px; line-height:1.6; font-weight: 400; font-family: 'Open Sans', Roboto, Arial; color: #626262; padding-bottom: 30px;">
-              Your account has been approved by PCN admin
+              Your account for {{$school_name}} has been approved by PCN.
             </td>
           </tr>
           <tr>
@@ -23,11 +23,12 @@
           <tr>
             <td style="font-size:16px; line-height:1.6; font-weight: 400; font-family: 'Open Sans', Roboto, Arial; color: #626262;">
               Sincerely,
+
             </td>
           </tr>
           <tr>
             <td style="font-size:16px; line-height:1.6; font-weight: 400; font-family: 'Open Sans', Roboto, Arial; color: #626262;">
-             PCN Team
+              PCN Education Department
             </td>
           </tr>
         </table>

@@ -141,10 +141,12 @@ class IndexManagementController extends Controller
         }else{
             if($request->file('student_doc')) {
 
-                $file = $request->file('student_doc');
-                $filename = $index_id.'_'.time().'_'.$file->getClientOriginalName();
+                $studentName     = HoldStudents::where('id',$student_id)->first()->first_name;
 
-                $displayName = $file->getClientOriginalName();
+                $file = $request->file('student_doc');
+                $filename = $studentName.'_'.$index_id.'_'.$file->getClientOriginalName();
+
+                $displayName = $filename;
 
                 // File extension
                 $extension = $file->getClientOriginalExtension();
@@ -213,10 +215,11 @@ class IndexManagementController extends Controller
 
             $first_name     =   Auth::user()->first_name;
             $email     =   Auth::user()->email;
-
+            $user_school_name      =    School::where('id',Auth::user()->school_id)->first()->school_name;
             $site_url   =   url('/');
             $email_data = array(
                 'first_name'=>$first_name,
+                'school_name'=>$user_school_name,
                 'site_url'=>$site_url
             );
             try{
@@ -256,10 +259,12 @@ class IndexManagementController extends Controller
         }else{
             if($request->file('student_pic')) {
 
-                $file = $request->file('student_pic');
-                $filename = $index_id.'_'.time().'_'.$file->getClientOriginalName();
+                $studentName     = HoldStudents::where('id',$student_id)->first()->first_name;
 
-                $displayName = $file->getClientOriginalName();
+                $file = $request->file('student_pic');
+                $filename = $studentName.'_'.$index_id.'_'.$file->getClientOriginalName();
+
+                $displayName = $filename;
 
                 // File extension
                 $extension = $file->getClientOriginalExtension();

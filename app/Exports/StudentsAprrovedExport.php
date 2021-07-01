@@ -19,7 +19,7 @@ class StudentsAprrovedExport implements FromCollection, WithHeadings
     }
     public function collection()
     {
-        return Student::select('first_name',
+        return Student::select('index_number','first_name',
         'middle_name',
         'last_name',
         'email',
@@ -47,11 +47,11 @@ class StudentsAprrovedExport implements FromCollection, WithHeadings
             DB::raw('DATE_FORMAT(qualification_four_date, "%d/%m/%Y") as qualification_four_date'),
         'qualification_five',
             DB::raw('DATE_FORMAT(qualification_five_date, "%d/%m/%Y") as qualification_five_date')
-        )->where(['index_id'=>$this->index_id,'status'=>'1'])->get();
+        )->where(['index_id'=>$this->index_id])->get();
     }
     public function headings(): array
     {
-        return ['first_name',
+        return ['index_number','first_name',
         'middle_name',
         'last_name',
         'email',

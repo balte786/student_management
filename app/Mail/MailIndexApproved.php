@@ -29,7 +29,7 @@ class MailIndexApproved extends Mailable implements ShouldQueue
      */
     public function build()
     {
-       return $this->subject('Index Approved by PCN Admin')
+       return $this->subject('Index Numbers Application Approved')
             ->view('emails.createIndexAprroved')
             ->with($this->data);
     }
