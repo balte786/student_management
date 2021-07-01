@@ -69,6 +69,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('admin/profile-update', [App\Http\Controllers\AdminController::class, 'profile_update']);
         Route::get('admin/quota', [App\Http\Controllers\AdminController::class, 'admin_quota']);
         Route::post('admin/quota-import', [App\Http\Controllers\AdminController::class, 'import']);
+        Route::get('admin/admin-quota-year/{year}', [App\Http\Controllers\AdminController::class, 'admin_quota_year']);
         Route::get('admin/admin-quota-upload', [App\Http\Controllers\AdminController::class, 'quota_upload']);
         Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('admin.users.index');
         Route::get('/users/{user_id}/approve', [App\Http\Controllers\UserController::class, 'approve'])->name('admin.users.approve');
