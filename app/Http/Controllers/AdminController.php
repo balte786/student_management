@@ -267,6 +267,19 @@ class AdminController extends Controller
         return view('admin-quota', $data);
     }
 
+    public function admin_quota_year($year){
+
+        $data['year'] = $year;
+        $data['quotas'] = SchoolQuota::
+        join('schools','school_quotas.school_id', '=', 'schools.id')
+            ->join('school_categories','school_quotas.category_id', '=', 'school_categories.id')
+            ->where('school_quotas.year',$year)
+            ->get();
+
+        $data['page'] = 'Admin Quota Year';
+        return view('admin-quota-year', $data);
+    }
+
     public function quota_upload()
     {
         $data['page'] = 'Admin Quota Management';

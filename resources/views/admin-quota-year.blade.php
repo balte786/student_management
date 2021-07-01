@@ -1,49 +1,56 @@
 @extends('layouts.main')
 
 @section('content')
+    <link rel="stylesheet" href="{{ asset('dist-assets/css/plugins/datatables.min.css') }}" />
     <div class="main-content">
         <div class="breadcrumb">
             <h1 class="mr-2">PCN Education Department | HQ Abuja</h1>
             <ul>
-                <li><a href="">Admission Quota Management</a></li>
+                <li><a href="javascript:void(0);">Quota Management</a></li>
             </ul>
         </div>
         <div class="separator-breadcrumb border-top"></div>
         <div class="row">
             <div class="col-lg-12 col-md-12">
-                <h2 class=" mb-6">Admission Quota Management</h2>
-                <hr>
-                <a href="{{ url('admin/admin-quota-upload') }}"><button class="btn btn-primary" type="button">ADD NEW YEARLY QUOTA</button></a>
-                <hr>
-                <!--begin::form-->
-                <div class="row">
+
+                <!--table start-->
 
 
-                    @foreach($quotas as $quota)
-                    <div class="col-lg-2 col-md-3 col-sm-4">
-                        <div class="card card-icon mb-4">
-                            <a href="{{ url('admin/admin-quota-year/'.$quota->year) }}">
-                                <div class="card-body text-center"><i class="i-Students"></i>
-                                    <p class="text-muted mt-2 mb-2">{{ $quota->category_name }}</p>
-                                    <p class="text-primary text-40 line-height-1 m-0">{{ $quota->year }}</p>
-                                </div>
-                            </a>
+                <div class="card text-left">
+                    <div class="card-body">
+                        <h1 class="card-title mb-6">Admission Quota for {{ $year }}</h1>
+                        <div class="table-responsive">
+                            <table class="display table table-striped table-bordered" id="multicolumn_ordering_table" style="width:100%">
+                                <thead>
+                                <tr>
+
+                                    <th>School Name</th>
+                                    <th>School Code</th>
+                                    <th>School Type</th>
+                                    <th>School Quota</th>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($quotas as $quotas)
+                                <tr>
+                                    <td>{{ $quotas->school_name }}</td>
+                                    <td>{{ $quotas->school_code }}</td>
+                                    <td>{{ $quotas->category_title }}</td>
+                                    <td>{{ $quotas->quota }}</td>
+                                </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                    @endforeach
                 </div>
 
 
-
-
-
-                <!-- end::form -->
-
-
-
-
-
+                <!--table end-->
             </div>
+
+
 
         </div>
         <!-- end of row-->
