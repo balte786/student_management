@@ -127,6 +127,13 @@ class SchoolController extends Controller
 
     }
 
+    static function fetchTotalCountsUniversity(){
+
+        return School::where('category_id','1')
+            ->where('school_code','!=','ADMINSCHOOL')->count();
+
+    }
+
     static function fetchFeildsFiles($id){
 
     //echo "in control"; exit;

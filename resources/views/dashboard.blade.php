@@ -34,7 +34,7 @@
                         <div class="card card-icon mb-4">
                             <div class="card-body text-center"><i class="i-Diploma-2"></i>
                                 <p class="text-muted mt-2 mb-2">University</p>
-                                <p class="text-primary text-50 line-height-1 m-0">{{ SchoolController::fetchTotalCounts('1','category_id'); }}</p>
+                                <p class="text-primary text-50 line-height-1 m-0">{{ SchoolController::fetchTotalCountsUniversity('1','category_id'); }}</p>
                             </div>
                         </div>
                     </div>
