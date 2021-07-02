@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\StudentsAprrovedExport;
 use App\Exports\StudentsExport;
 use App\Models\School;
 use Illuminate\Http\Request;
@@ -550,9 +551,20 @@ class AdminController extends Controller
         $data['pages']     =   "Approved";
         $index_rec     =   IndexManagement::where(array('id'=>$id))->first();
         $data['index_year']= $index_rec->year;
+        $data['index_id']=$id;
         $data['school_name']= School::where('id',$index_rec->school_id)->first()->school_name;
         $data['approved_students']      =   Student::where(array('index_id'=>$id))->get();
         return view('admin-index-approved', $data);
+
+    }
+
+    public function admin_approved_export_index($index_id){
+
+        $index_rec  =   IndexManagement::where('id',$index_id)->first();
+        $schools    =   School::where('id',$index_rec->school_id)->first();
+        $file_name  =   $schools->school_code.'_'.$index_rec->year;
+
+        return Excel::download(new StudentsAprrovedExport($index_id), $file_name.'.xlsx');
 
     }
 }
