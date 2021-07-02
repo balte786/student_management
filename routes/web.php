@@ -81,6 +81,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin-index-pending/{id}', [App\Http\Controllers\AdminController::class, 'admin_index_pending']);
 		Route::post('/approve-students', [App\Http\Controllers\AdminController::class, 'approve_students']);
         Route::get('/admin/index-approved/{id}', [App\Http\Controllers\AdminController::class, 'admin_index_approved']);
+        Route::get('/admin/approved-index-export/{id}', [App\Http\Controllers\AdminController::class, 'admin_approved_export_index']);
+
 
 		
 

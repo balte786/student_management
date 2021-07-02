@@ -106,7 +106,7 @@
                             </table>
                             <div class="col-lg-12 col-md-12">
 
-                                <button class="btn btn-primary btn-icon m-1" type="button"><span class="ul-btn__text">DOWNLOAD APPROVED INDEX NUMBERS (EXCEL)</span></button>
+                                <a href="{{ url('/admin/approved-index-export/'.$index_id)}}"><button class="btn btn-primary btn-icon m-1" type="button"><span class="ul-btn__text">DOWNLOAD APPROVED INDEX NUMBERS (EXCEL)</span></button></a>
                             </div>
                         </div>
                     </div>
