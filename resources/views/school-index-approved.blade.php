@@ -55,7 +55,7 @@
                                     <td>{{$student['index_number']}}</td>
                                     <td>{{$student['first_name']}} {{$student['middle_name']}} {{$student['last_name']}}</td>
                                     <td>{{$student['gender']}}</td>
-                                    <td>{{$student['date_of_birth']}}</td>
+                                    <td><?php echo date('d-m-Y',strtotime($student['date_of_birth']));?></td>
                                     <td>{{$student['state_of_origin']}}</td>
 
                                     <td>

@@ -130,7 +130,7 @@ class IndexManagementController extends Controller
         $student_id      =    $request->student_id;
         $school_id      =    $request->school_id;
         $validator = Validator::make($request->all(), [
-            'student_doc' => 'required|mimes:png,jpg,jpeg,pdf,doc,docx|max:2048'
+            'student_doc' => 'required|mimes:pdf|max:2048'
         ]);
 
         if ($validator->fails()) {
@@ -203,13 +203,101 @@ class IndexManagementController extends Controller
 
 
 
-    public function school_index_submission(request $request,$id){
+    public function school_index_submission(request $request,$index_id){
 
 
 
-        $indexUpdate       = IndexManagement::find($id);
+        $this->validate($request, [
+            "student_doc.*"  => "required|mimes:pdf|max:2048",
+            "student_pic.*"  => "required|mimes:jpeg,jpg,png,gif|max:1048"
 
-       $indexUpdate->uploading_status      =    '1';
+
+        ]);
+
+
+        //echo "passed"; exit;
+
+
+
+
+
+        $data = array();
+        $index_id      =    $request->index_id;
+
+        $school_id      =    $request->school_id;
+
+
+        $student_id =   $request->student_id;
+
+        foreach($student_id as $id){
+
+            $student_file = $request->file('student_doc')[$id];
+            $student_picture = $request->file('student_pic')[$id];
+
+            $studentName     = HoldStudents::where('id',$id)->first()->first_name;
+
+            $filename = $studentName.'_'.$index_id.'_'.$student_file->getClientOriginalName();
+            $imagename = $studentName.'_'.$index_id.'_'.$student_picture->getClientOriginalName();
+
+            //$fileextension = $student_file->getClientOriginalExtension();
+            //$pictureextension = $student_picture->getClientOriginalExtension();
+
+            $schoolCode    = School::fetchFeildsGeric('schools','school_code','id',$school_id);
+            $year    = School::fetchFeildsGeric('index_managements','year','id',$index_id);
+
+            $location = 'student_upload_files/'.$schoolCode.'/'.$year.'/'.$id;
+
+            if($student_file->move($location,$filename)){
+
+                $checkExist    =    DB::table('hold_student_files')->where('student_id',$id)->first();
+
+                if($checkExist){
+
+                    $values = array('student_id' => $id,'file_name' => $filename);
+                    DB::table('hold_student_files')->where('student_id',$id)->update($values);
+
+                    //$data['message'] = 'Updated Successfully!';
+
+                }else{
+
+                    $values = array('student_id' => $id,'file_name' => $filename);
+                    DB::table('hold_student_files')->insert($values);
+
+                    //$data['message'] = 'Uploaded Successfully!';
+                }
+
+            }
+
+
+            if($student_picture->move($location,$imagename)){
+
+                $checkExist    =    DB::table('hold_student_pictures')->where('student_id',$id)->first();
+
+                if($checkExist){
+
+                    $values = array('student_id' => $id,'file_name' => $imagename);
+                    DB::table('hold_student_pictures')->where('student_id',$id)->update($values);
+
+                    //$data['message'] = 'Updated Successfully!';
+
+                }else{
+
+                    $values = array('student_id' => $id,'file_name' => $imagename);
+                    DB::table('hold_student_pictures')->insert($values);
+
+                    //$data['message'] = 'Uploaded Successfully!';
+                }
+
+            }
+
+
+
+        }
+
+        $indexUpdate       = IndexManagement::find($index_id);
+
+
+        $indexUpdate->uploading_status      =    '1';
 
         if($indexUpdate->save()){
 
@@ -233,11 +321,81 @@ class IndexManagementController extends Controller
 
         $request->session()->flash('message', 'Successfully uploaded the index');
         return redirect('school-index-list');
+
+
+
+        exit;
+
+
+
+
+
+            if($request->file('student_doc')) {
+
+
+
+
+
+
+
+
+
+                //print_r($file); exit;
+
+
+
+
+
+
+
+                //echo "lockkkkk>>".$location; exit;
+
+                // Upload file
+                if($file->move($location,$filename)){
+
+                    $checkExist    =    DB::table('hold_student_files')->where('student_id',$student_id)->first();
+
+                    if($checkExist){
+
+                        $values = array('student_id' => $student_id,'file_name' => $filename);
+                        DB::table('hold_student_files')->where('student_id',$student_id)->update($values);
+
+                        //$data['message'] = 'Updated Successfully!';
+
+                    }else{
+
+                        $values = array('student_id' => $student_id,'file_name' => $filename);
+                        DB::table('hold_student_files')->insert($values);
+
+                        //$data['message'] = 'Uploaded Successfully!';
+                    }
+
+                }
+
+
+
+
+                // File path
+               // $filepath = url('student_upload_files/'.$filename);
+
+                // Response
+               // $data['success'] = 1;
+
+                // $data['filename'] = $displayName;
+
+
+            }
+
     }
 
     static function countApplicants($id){
 
         return Student::where('index_id',$id)->count();
+    }
+
+    static function countHoldApplicants($id){
+
+        return HoldStudents::where('index_id',$id)->count();
     }
 
 
