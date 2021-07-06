@@ -175,6 +175,7 @@
 <script src="{{ asset('dist-assets/js/scripts/datatables.script.min.js') }}"></script>
 <script src="{{ asset('dist-assets/js/scripts/dashboard.v2.script.min.js') }}"></script>
 
+
 </body>
 
 </html>

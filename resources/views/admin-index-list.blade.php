@@ -37,6 +37,7 @@
                                     <th>School Name</th>
                                     <th>Quota</th>
                                     <th>Applications</th>
+                                    <th>Approved</th>
                                     <th>Status</th>
                                     <th>Action</th>
 
@@ -49,7 +50,18 @@
                                     <td>{{ $list->year }}</td>
                                     <td>{{ $list->school_name }}</td>
                                     <td>{{ $list->quota }}</td>
+
+                                    @if($list->status==1)
+
+                                    <td><?php echo IndexManagementController::countApplicants($list->id) + IndexManagementController::countHoldApplicants($list->id); ?></td>
+
+                                    @else
+                                        <td>{{ IndexManagementController::countHoldApplicants($list->id) }}</td>
+
+                                    @endif
+
                                     <td>{{ IndexManagementController::countApplicants($list->id) }}</td>
+
                                     @if($list->status==1)
                                         <td><span class="badge badge-success">APPROVED</span></td>
                                         <td><a href="{{ url('/admin/index-approved',[$list->id])}}"><button class="btn btn-success" type="button"><i class="nav-icon i-Folder-Download"></i></button></a></td>

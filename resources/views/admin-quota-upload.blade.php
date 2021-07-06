@@ -20,7 +20,7 @@
                         <div class="row">
                             <div class="col-lg-12 col-md-12">
                                 <p>Download the Quota Template and complete accordingly</p>
-                                <a href="{{ asset('general_formates/quota.xlsx') }}" class="btn btn-primary btn-icon m-1" type="button"><span class="ul-btn__icon"><i class="i-File-Excel"></i></span><span class="ul-btn__text">DOWNLOAD QUOTA TEMPLATE</span></a>
+                                <button onclick="return validateCatId()" class="btn btn-primary btn-icon m-1" type="button"><span class="ul-btn__icon"><i class="i-File-Excel"></i></span><span class="ul-btn__text">DOWNLOAD QUOTA TEMPLATE</span></button>
                                 {{--<a href="{{ asset('general_formates/quota.xlsx') }}" class="btn btn-primary btn-icon m-1" type="button"><span class="ul-btn__icon"><i class="i-File-Excel"></i></span><span class="ul-btn__text">DOWNLOAD SCHOOL OF HEALTH TECHNOLOGY QUOTA TEMPLATE</span></a>--}}
 
                             </div>
@@ -42,7 +42,7 @@
                                         </div>
                                         <div class="col-md-4 form-group mb-3 input-group">
 
-                                            <select name="category_id" class="form-control" >
+                                            <select name="category_id" id="category_id" class="form-control" >
                                                 <option value="" selected>Institution Category</option>
                                                 <option value="1">University</option>
                                                 <option value="2">School of Health Technology</option>
@@ -106,4 +106,28 @@
         </div>
     <!-- fotter end -->
     </div>
+
+
+    <script>
+
+        function validateCatId() {
+
+            category_id=  $("#category_id").val();
+
+
+
+            if(category_id!=""){
+
+                window.location = "/admin/quota-template-export/" + category_id;
+                return true;
+            }else{
+
+                alert('Please select the category first');
+
+                return false;
+            }
+        }
+
+
+    </script>
 @endsection

@@ -5,7 +5,6 @@
 
     ?>
     <link rel="stylesheet" href="{{ asset('dist-assets/css/plugins/datatables.min.css') }}" />
-
     <div class="main-content">
         <div class="breadcrumb">
             <h1 class="mr-2">{{ Auth::user()->school->school_name }}</h1>
@@ -13,24 +12,10 @@
                 <li><a href="">Application for Index Numbers</a></li>
             </ul>
         </div>
-        <div class="separator-breadcrumb border-top">
-
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
-
-        </div>
+        <div class="separator-breadcrumb border-top"></div>
         <div class="row">
             <div class="col-lg-12 col-md-12">
-                <form id="std_doc_form" name="std_doc_form" action="{{url('school-index-submission',[$index_id])}}" method="post" enctype="multipart/form-data">
-                @csrf
+
                 <!--table start-->
                 <div class="card text-left">
 
@@ -63,49 +48,74 @@
                                     <td><?php echo date('d-m-Y',strtotime($student['date_of_birth']));?></td>
                                     <td>{{$student['state_of_origin']}}</td>
                                     <td>
-
-
+                                        <form name="std_doc_form_{{$i}}" id="std_doc_form_{{$i}}">
+                                            @csrf
                                             <div class="row">
 
                                                 <div class="col-md-12 form-group mb-3 input-group">
 
                                                     <div class="custom-file">
 
-                                                        <input class="custom-file-input" onchange="loadName(this,<?php echo $i;?>,'1')" id="student_doc_{{$i}}" name="student_doc[{{$student['id']}}]" type="file" required />
-                                                        <label class="custom-file-label" id="filecontainer_{{$i}}" for="inputGroupFile02" aria-describedby="inputGroupFileAddon02">Choose file</label>
-                                                        <input type="hidden" value="{{$student['id']}}" name="student_id[]">
-
+                                                        <input class="custom-file-input" name="student_doc" id="inputGroupFile_{{$i}}" type="file" />
+                                                        <label class="custom-file-label" for="inputGroupFile02" aria-describedby="inputGroupFileAddon02">Choose file</label>
+                                                        <input type="hidden" value="{{$student['id']}}" name="student_id">
+                                                        <input type="hidden" value="{{$student['index_id']}}" name="index_id">
+                                                        <input type="hidden" value="{{$student['school_id']}}" name="school_id">
                                                     </div>
 
+                                                    <div class="input-group-append"><button onclick="return uploadStudentFiles({{$student['id']}},{{$i}})" class="input-group-text" name="upload_btn_{{$i}}" id="upload_btn_{{$i}}">Upload</button></div>
 
                                                 </div>
+                                                <p style="padding-left:17px;" id="msg_container_{{$i}}">
 
+                                                <?php $filename     = SchoolController::fetchFeildsGeric('hold_student_files','file_name','student_id',$student['id']); ?>
+
+                                                 @if($filename)
+
+                                                 {{$filename}}
+
+                                                 @endif
+
+                                                </p>
 
                                             </div>
-
+                                        </form>
                                     </td>
 
 
                                     <td>
-
-
+                                        <form name="std_pic_form_{{$i}}" id="std_pic_form_{{$i}}">
+                                            @csrf
                                             <div class="row">
 
                                                 <div class="col-md-12 form-group mb-3 input-group">
 
                                                     <div class="custom-file">
 
-                                                        <input class="custom-file-input" onchange="loadName(this,<?php echo $i;?>,'2')" id="student_pic_{{$i}}" name="student_pic[{{$student['id']}}]" type="file" required />
-                                                        <label class="custom-file-label" id="filecontainer_img{{$i}}" for="inputGroupFile02" aria-describedby="inputGroupFileAddon02">Choose file</label>
-
+                                                        <input class="custom-file-input" name="student_pic" id="picture_{{$i}}" type="file" />
+                                                        <label class="custom-file-label" for="inputGroupFile02" aria-describedby="inputGroupFileAddon02">Choose file</label>
+                                                        <input type="hidden" value="{{$student['id']}}" name="student_id">
+                                                        <input type="hidden" value="{{$student['index_id']}}" name="index_id">
+                                                        <input type="hidden" value="{{$student['school_id']}}" name="school_id">
                                                     </div>
 
+                                                    <div class="input-group-append"><button onclick="return uploadStudentPicture({{$student['id']}},{{$i}})" class="input-group-text" name="upload_picture_{{$i}}" id="upload_picture_{{$i}}">Upload</button></div>
 
                                                 </div>
+                                                <p style="padding-left:17px;" id="msg_container_pic_{{$i}}">
 
+                                                    <?php $filenameimg     = SchoolController::fetchFeildsGeric('hold_student_pictures','file_name','student_id',$student['id']); ?>
+
+                                                    @if($filenameimg)
+
+                                                        {{$filenameimg}}
+
+                                                    @endif
+
+                                                </p>
 
                                             </div>
-
+                                        </form>
                                     </td>
 
                                 </tr>
@@ -117,7 +127,7 @@
                             </table>
                             <div class="col-lg-12 col-md-12">
 
-                                <button class="btn btn-primary btn-icon m-1" type="submit"><span class="ul-btn__text">SUBMIT INDEXING APPLICATION</span></button>
+                                <a href="{{url('school-index-submission',[$index_id])}}" class="btn btn-primary btn-icon m-1" type="button"><span class="ul-btn__text">SUBMIT INDEXING APPLICATION</span></a>
                             </div>
                         </div>
                     </div>
@@ -127,10 +137,8 @@
 
 
                 </div>
-                    <input type="hidden" value="{{$student['index_id']}}" name="index_id">
-                    <input type="hidden" value="{{$student['school_id']}}" name="school_id">
 
-                </form>
+
                 <!--table end-->
             </div>
 
@@ -247,49 +255,6 @@
 
             return false;
         }
-
-      function loadName(fileData,id,type){
-
-          var file = fileData.files[0];
-          var filename = file.name;
-
-          if(type==1){
-              var fileInput =
-                  document.getElementById('student_doc_'+id);
-
-              var filePath = fileInput.value;
-
-              // Allowing file type
-              var allowedExtensions =
-                  /(\.pdf)$/i;
-
-              if (!allowedExtensions.exec(filePath)) {
-                  $("#filecontainer_"+id).html("<span style='color:red;'>Invalid file type</span>");
-                  fileInput.value = '';
-                  return false;
-              }
-              $("#filecontainer_"+id).text(filename);
-          }else{
-              var fileInput =
-                  document.getElementById('student_pic_'+id);
-
-              var filePath = fileInput.value;
-
-              // Allowing file type
-              var allowedExtensions =
-                  /(\.png|\.jpg|\.jpeg|\.gif)$/i;
-
-              if (!allowedExtensions.exec(filePath)) {
-                  $("#filecontainer_img"+id).html("<span style='color:red;'>Invalid image type</span>");
-                  fileInput.value = '';
-                  return false;
-              }
-              $("#filecontainer_img"+id).text(filename);
-          }
-
-      }
-
-
 
     </script>
 @endsection

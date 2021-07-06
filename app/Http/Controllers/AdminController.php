@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Exports\StudentsAprrovedExport;
 use App\Exports\StudentsExport;
+use App\Exports\SchoolQuotaExport;
+
 use App\Models\School;
 use Illuminate\Http\Request;
 use Auth;
@@ -398,7 +400,7 @@ class AdminController extends Controller
     $schoolCode     =   School::where('id',$indexData->school_id)->first()->school_code;
     $category_id     =   School::where('id',$indexData->school_id)->first()->category_id;
 	$student_ids	=	$request->student_ids;
-	$counter    =   1;
+	$counter    =   IndexManagementController::countApplicants($index_id)+1;
 	for($i=0;$i<count($student_ids); $i++){
 		
 		//$values = array('status' => '1');
@@ -413,7 +415,7 @@ class AdminController extends Controller
 
         }else if($category_id=='1'){
 
-            $index_number = $schoolCode . '/' . substr($year, -2) . '/' . sprintf("%04d", $counter);
+            $index_number = $schoolCode . substr($year, -2) .sprintf("%04d", $counter);
         }
 
         $student = new Student;
@@ -509,19 +511,25 @@ class AdminController extends Controller
 	$index	=	 IndexManagement::find($index_id);
 	$index->status = '1';
 	if($index->save()){
-		$user_record = User::where('school_id',$request->school_id)->first();
-        $user_school_name      =    School::where('id',$request->school_id)->first()->school_name;
-		$site_url   =   url('/');
+
+	    if($counter=='1') {
+
+            $user_record = User::where('school_id', $request->school_id)->first();
+            $user_school_name = School::where('id', $request->school_id)->first()->school_name;
+            $site_url = url('/');
             $email_data = array(
-                'first_name'=>$user_record->first_name,
-				'year'=>$index->year,
-                'school_name'=>$user_school_name,
-                'site_url'=>$site_url
+                'first_name' => $user_record->first_name,
+                'year' => $index->year,
+                'school_name' => $user_school_name,
+                'site_url' => $site_url
             );
-            try{ 
-			Mail::to($user_record->email)->send(new MailIndexApproved($email_data));
-			}
-            catch(\Exception $e){}
+            try {
+                Mail::to($user_record->email)->send(new MailIndexApproved($email_data));
+            } catch (\Exception $e) {
+            }
+        }
+
+
 	}
 	//DB::table('index_managements')->where('id',$index_id)->update($values2);
 	
@@ -566,5 +574,15 @@ class AdminController extends Controller
 
         return Excel::download(new StudentsAprrovedExport($index_id), $file_name.'.xlsx');
 
+    }
+
+    public function quota_template_export($category_id){
+
+       // echo "iam".$category_id;
+
+        //exit;
+
+        $file_name  = "Quota";
+        return Excel::download(new SchoolQuotaExport($category_id), $file_name.'.xlsx');
     }
 }

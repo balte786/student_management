@@ -31,6 +31,14 @@
                 </div>
                 <div class="col-md-6">
                     <div class="p-4">
+
+                        @if ($errors->any())
+                            @foreach ($errors->all() as $error)
+                                <div class="alert alert-danger">{{$error}}</div>
+                            @endforeach
+                        @endif
+
+
                         <h1 class="mb-3 text-18">Sign Up</h1>
                         <form method="POST" action="{{ route('register') }}">
                             @csrf
@@ -72,7 +80,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="picker1">School Type</label>
-                                <select  class="form-control @error('phone') is-invalid @enderror" name="school_type" onChange="loadSchools(this.value)">
+                                <select  class="form-control @error('school_type') is-invalid @enderror" name="school_type" onChange="loadSchools(this.value)">
                                     <option value="" selected="selected">Select</option>
                                     @foreach ($school_categories as $school_category)
                                         <option value="{{ $school_category->id }}">{{ $school_category->category_name }}</option>
