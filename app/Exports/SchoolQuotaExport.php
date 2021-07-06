@@ -21,7 +21,9 @@ class SchoolQuotaExport implements FromCollection , WithHeadings
     */
     public function collection()
     {
-        return School::select('school_name','school_code')->where(['category_id'=>$this->category_id])->get();
+        return School::select('school_name','school_code')->where('category_id',$this->category_id)
+            ->where('school_code','!=','ADMINSCHOOL')
+            ->get();
     }
 
     public function headings(): array
