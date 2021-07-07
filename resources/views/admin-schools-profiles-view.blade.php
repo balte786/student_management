@@ -30,7 +30,7 @@
                             </div>
                             <div class="col-md-2 form-group mb-3">
                                 <label for="picker1"><strong>School Location</strong></label>
-                                <p>{{ SchoolController::fetchFeilds('states','state_name',$user_details['school_id']); }}</p>
+                                <p>{{ SchoolController::fetchFeilds('states','state_name',$user_details['state_id']); }}</p>
                             </div>
                             <div class="col-md-2 form-group mb-3">
                                 <label for="picker1"><strong>School Type</strong></label>
@@ -51,7 +51,7 @@
                             </div>
                             <div class="col-md-3 form-group mb-3">
                                 <label for="picker1"><strong>Phone</strong></label>
-                                <p>{{$user_details['phone']}}</p>
+                                <p>{{$user_details['phone_number']}}</p>
                             </div>
 
 
