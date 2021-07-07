@@ -72,8 +72,10 @@ class IndexImport implements ToCollection, WithHeadingRow
             $student->qualification_five        =   $row['qualification_5'];
             $student->qualification_five_date        =   Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['qualification_date_5']));
 
-            $student->save();
-            $i++;
+            if($row['firstname']!='' && $row['lastname']!=''){
+                $student->save();
+                $i++;
+            }
         }
     }
 }

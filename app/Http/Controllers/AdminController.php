@@ -77,7 +77,9 @@ class AdminController extends Controller
 
     $data['states']  = DB::table('states')->get();
     $data['school_categories']  = DB::table('school_categories')->get();
-    $data['user_details']     =   User::find($id);
+    $data['user_details']     =   User::join('schools','schools.id', '=', 'users.school_id')
+        ->where('users.id',$id)
+        ->first();
     return view('admin-schools-profiles-view', $data);
     }
 
